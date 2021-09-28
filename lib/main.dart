@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'dart:math';
+// import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:scroll_snap_list/scroll_snap_list.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:flutter/services.dart' show rootBundle;
+// import 'package:scroll_snap_list/scroll_snap_list.dart';
+// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 
 class Cocktail {
@@ -30,9 +30,10 @@ class Cocktail {
 }
 
 List<Cocktail> cockList = [];
-Future<List<Cocktail>> fetchCockList() async {
+Future<List<Cocktail>> fetchCockList(
+    {List<String> filterList: const []}) async {
   final response = await http.get(Uri.parse(
-      'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=gin'));
+      'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=vodka'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -77,7 +78,6 @@ class CockList extends StatefulWidget {
 class _CockListState extends State<CockList> {
   Map<int, bool> countToValue = <int, bool>{};
   List<Container> containerList = [];
-  int _focusedIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -94,42 +94,42 @@ class _CockListState extends State<CockList> {
     }
   }
 
-  void _onItemFocus(int index) {
-    setState(() {
-      _focusedIndex = index;
-    });
-  }
+  // void _onItemFocus(int index) {
+  //   setState(() {
+  //     _focusedIndex = index;
+  //   });
+  // }
 
-  Widget _buildCocktailDesc() {
-    if (cockList.length > _focusedIndex)
-      return Container(
-        height: 25,
-        child: Text(cockList[_focusedIndex].name),
-      );
+  // Widget _buildCocktailDesc() {
+  //   if (cockList.length > _focusedIndex)
+  //     return Container(
+  //       height: 25,
+  //       child: Text(cockList[_focusedIndex].name),
+  //     );
 
-    return Container(
-      height: 25,
-      child: Text("No Data"),
-    );
-  }
+  //   return Container(
+  //     height: 25,
+  //     child: Text("No Data"),
+  //   );
+  // }
 
-  Widget _buildListItem(BuildContext context, int index) {
-    //horizontal
-    return Container(
-      width: 400,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            height: 500,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.orangeAccent,
-            child: Image.network(cockList[_focusedIndex].imgLink),
-          )
-        ],
-      ),
-    );
-  }
+  // Widget _buildListItem(BuildContext context, int index) {
+  //   //horizontal
+  //   return Container(
+  //     width: 400,
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: <Widget>[
+  //         Container(
+  //           height: 500,
+  //           width: MediaQuery.of(context).size.width,
+  //           color: Colors.orangeAccent,
+  //           child: Image.network(cockList[_focusedIndex].imgLink),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget build(BuildContext context) {
     return Scaffold(
