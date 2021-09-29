@@ -1,4 +1,4 @@
-name: flutter_assignment
+name: CockBotApp
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -27,10 +27,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  scroll_snap_list: ^0.8.2
+  # scroll_snap_list: ^0.8.2
   flutter_staggered_grid_view: ^0.4.0
-  carousel_slider: ^4.0.0
-  web_scraper: ^0.1.4
+  # carousel_slider: ^4.0.0
+  # web_scraper: ^0.1.4
+  # flappy_search_bar: ^1.7.2
 
 dev_dependencies:
   flutter_test:
