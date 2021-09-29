@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
+import 'cock.dart' as cock;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
