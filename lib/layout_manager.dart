@@ -1,4 +1,4 @@
-import 'dart:math';
+// import 'dart:math';
 import 'dart:typed_data';
 import 'cock.dart' as cock;
 
@@ -72,30 +72,38 @@ final Uint8List kTransparentImage = Uint8List.fromList(<int>[
   0xAE,
 ]);
 
-List<IntSize> _createSizes(int count) {
-  final rnd = Random();
-  return List.generate(
-      count, (i) => IntSize(rnd.nextInt(500) + 200, rnd.nextInt(800) + 200));
+// List<IntSize> _createSizes(int count) {
+//   final rnd = Random();
+//   return List.generate(
+//       count, (i) => IntSize(rnd.nextInt(500) + 200, rnd.nextInt(800) + 200));
+// }
+
+List<cock.Cocktail> _createCockList(String ingredient) {
+  cock.fetchCockList(ingredient);
+  return cock.cockList;
 }
 
 class LayoutManager extends StatelessWidget {
-  LayoutManager() : _sizes = _createSizes(_kItemCount).toList();
+  // LayoutManager() : _sizes = _createSizes(_kItemCount).toList();
+  LayoutManager() : _cockl = _createCockList('vodka').toList();
 
-  static const int _kItemCount = 20;
-  final List<IntSize> _sizes;
+  // static const int _kItemCount = 20;
+  // final List<IntSize> _sizes;
+  final List<cock.Cocktail> _cockl;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cockatails'),
+        title: const Text('Cocktails'),
       ),
       body: StaggeredGridView.countBuilder(
         primary: false,
         crossAxisCount: 4,
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
-        itemBuilder: (context, index) => _Tile(index, _sizes[index]),
+        // itemBuilder: (context, index) => _Tile(index, _sizes[index]),
+        itemBuilder: (context, index) => _Tile(index, _cockl.elementAt(index)),
         staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
       ),
     );
@@ -110,13 +118,16 @@ class IntSize {
 }
 
 class _Tile extends StatelessWidget {
-  const _Tile(this.index, this.size);
+  // const _Tile(this.index, this.size);
+  const _Tile(this.index, this.cocktail);
 
-  final IntSize size;
+  // final IntSize size;
+  final cock.Cocktail cocktail;
   final int index;
 
   @override
   Widget build(BuildContext context) {
+    cock.fetchCockDetail(cocktail);
     return Card(
       child: Column(
         children: <Widget>[
@@ -126,7 +137,7 @@ class _Tile extends StatelessWidget {
               Center(
                 child: FadeInImage.memoryNetwork(
                   placeholder: kTransparentImage,
-                  image: 'https://picsum.photos/${size.width}/${size.height}/',
+                  image: cocktail.imgLink,
                 ),
               ),
             ],
@@ -136,15 +147,11 @@ class _Tile extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Text(
-                  'Image number $index',
+                  cocktail.name,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Width: ${size.width}',
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  'Height: ${size.height}',
+                  cocktail.isAlchool,
                   style: const TextStyle(color: Colors.grey),
                 ),
               ],
