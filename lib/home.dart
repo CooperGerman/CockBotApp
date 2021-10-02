@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'routes.dart';
-import 'cock.dart';
 
 const List<StaggeredTile> _tiles = <StaggeredTile>[
   const StaggeredTile.count(2, 1),

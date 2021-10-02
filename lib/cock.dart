@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+// import 'dart:html';
 import 'package:http/http.dart' as http;
 
 class Cocktail {
@@ -47,7 +48,7 @@ Future<List<Cocktail>> fetchCockList(String ingredient) async {
   }
 }
 
-Future<void> fetchCockDetail(Cocktail cocktail) async {
+Future<Cocktail> fetchCockDetail(Cocktail cocktail) async {
   final response = await http.get(Uri.parse(
       'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' +
           cocktail.id));
@@ -57,6 +58,13 @@ Future<void> fetchCockDetail(Cocktail cocktail) async {
     // then parse the JSON.
     Map decoded = jsonDecode(response.body);
     cocktail.isAlchool = decoded['drinks'][0]['strAlcoholic'];
+    for (var i = 1; i < 16; i++) {
+      if (decoded['drinks'][0]['strIngredient' + i.toString()] != null) {
+        cocktail.ingredients
+            .add(decoded['drinks'][0]['strIngredient' + i.toString()]);
+      }
+    }
+    return cocktail;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
