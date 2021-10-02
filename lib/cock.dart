@@ -24,8 +24,8 @@ class Cocktail {
   }
 }
 
-List<Cocktail> cockList = [];
 Future<List<Cocktail>> fetchCockList(String ingredient) async {
+  List<Cocktail> cockList = [];
   final response = await http.get(Uri.parse(
       'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' +
           ingredient));
