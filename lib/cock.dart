@@ -67,10 +67,14 @@ Future<Cocktail> fetchCockDetail(Cocktail cocktail) async {
       if (decoded['drinks'][0]['strIngredient' + i.toString()] != null) {
         cocktail.ingredients
             .add(decoded['drinks'][0]['strIngredient' + i.toString()]);
-        if (decoded['drinks'][0]['strMeasure1' + i.toString()] != null) {
-          cocktail.measures
-              .add(decoded['drinks'][0]['strIngredient' + i.toString()]);
-        }
+        // } else {
+        //   cocktail.ingredients.add('null');
+      }
+      if (decoded['drinks'][0]['strMeasure' + i.toString()] != null) {
+        cocktail.measures
+            .add(decoded['drinks'][0]['strMeasure' + i.toString()]);
+        // } else {
+        //   cocktail.measures.add('null');
       }
     }
     return cocktail;

@@ -6,7 +6,7 @@ import 'routes.dart';
 const List<StaggeredTile> _tiles = <StaggeredTile>[
   const StaggeredTile.count(2, 1),
   const StaggeredTile.count(1, 1),
-  // const StaggeredTile.count(1, 1),
+  const StaggeredTile.count(1, 1),
   // const StaggeredTile.count(1, 1),
   // const StaggeredTile.count(1, 1),
   // const StaggeredTile.count(2, 1),
@@ -29,6 +29,7 @@ const List<StaggeredTile> _tiles = <StaggeredTile>[
 List<Widget> _children = const <Widget>[
   HomeHeaderTile('Choice', Colors.orange),
   HomeTile('Cocktails', Colors.orangeAccent, layout_manager),
+  HomeTile('Available Liquids', Colors.orangeAccent, liquid_viewer),
   //HomeTile('test', Colors.pink, exampleTests),
 ];
 

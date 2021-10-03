@@ -9,9 +9,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'StaggeredGridView Demo',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      // ),
       theme: ThemeData.dark(),
       routes: routes,
     );

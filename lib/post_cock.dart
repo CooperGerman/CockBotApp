@@ -9,8 +9,16 @@ Future<http.Response> postCock(Cocktail cock) {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: jsonEncode(<String, String>{
-      'Cock': cock.name,
+    body: jsonEncode(<String, dynamic>{
+      cock.name: {
+        'imgLink': cock.imgLink,
+        'id': cock.id,
+        'isAlchool': cock.isAlchool,
+        'prefGlass': cock.prefGlass,
+        'instructions': cock.instructions,
+        'ingredients': cock.ingredients,
+        'measures': cock.measures
+      },
     }),
   );
 }

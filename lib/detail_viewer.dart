@@ -92,15 +92,6 @@ class DetailViewer extends StatelessWidget {
                 fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ));
-    final topContent = Container(
-      // height: MediaQuery.of(context).size.height,
-      // width: MediaQuery.of(context).size.width,
-      color: Theme.of(context).primaryColor,
-      padding: EdgeInsets.all(2.0),
-      child: Center(
-        child: readButton,
-      ),
-    );
     //------------
     // scaffold
     //------------

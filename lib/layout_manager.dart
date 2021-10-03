@@ -84,7 +84,7 @@ class _LayoutManagerState extends State<LayoutManager> {
   List<Cocktail> _cockl = [];
 
   _LayoutManagerState() {
-    fetchCockList('tequila').then((val) => setState(() {
+    fetchCockList('rum').then((val) => setState(() {
           _cockl = val;
         }));
   }
