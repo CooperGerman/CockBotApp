@@ -8,7 +8,10 @@ class Cocktail {
   final String imgLink;
   final String id;
   String isAlchool = '';
+  String prefGlass = '';
+  String instructions = '';
   List<String> ingredients = [];
+  List<String> measures = [];
 
   Cocktail({
     required this.name,
@@ -58,10 +61,16 @@ Future<Cocktail> fetchCockDetail(Cocktail cocktail) async {
     // then parse the JSON.
     Map decoded = jsonDecode(response.body);
     cocktail.isAlchool = decoded['drinks'][0]['strAlcoholic'];
+    cocktail.prefGlass = decoded['drinks'][0]['strGlass'];
+    cocktail.instructions = decoded['drinks'][0]['strInstructions'];
     for (var i = 1; i < 16; i++) {
       if (decoded['drinks'][0]['strIngredient' + i.toString()] != null) {
         cocktail.ingredients
             .add(decoded['drinks'][0]['strIngredient' + i.toString()]);
+        if (decoded['drinks'][0]['strMeasure1' + i.toString()] != null) {
+          cocktail.measures
+              .add(decoded['drinks'][0]['strIngredient' + i.toString()]);
+        }
       }
     }
     return cocktail;
