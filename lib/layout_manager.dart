@@ -1,6 +1,6 @@
 // import 'dart:math';
 import 'dart:typed_data';
-import 'cock.dart' as cock;
+import 'package:cockbotapp/cock.dart';
 import 'routes.dart';
 
 import 'package:flutter/material.dart';
@@ -81,10 +81,10 @@ class LayoutManager extends StatefulWidget {
 }
 
 class _LayoutManagerState extends State<LayoutManager> {
-  List<cock.Cocktail> _cockl = [];
+  List<Cocktail> _cockl = [];
 
   _LayoutManagerState() {
-    cock.fetchCockList('rum').then((val) => setState(() {
+    fetchCockList('tequila').then((val) => setState(() {
           _cockl = val;
         }));
   }
@@ -110,7 +110,7 @@ class _LayoutManagerState extends State<LayoutManager> {
 
 class CockView extends StatefulWidget {
   const CockView(this.index, this.cocktail);
-  final cock.Cocktail cocktail;
+  final Cocktail cocktail;
   final int index;
   @override
   _CockViewState createState() {
@@ -119,10 +119,10 @@ class CockView extends StatefulWidget {
 }
 
 class _CockViewState extends State<CockView> {
-  cock.Cocktail cocktail;
+  Cocktail cocktail;
   final int index;
   _CockViewState(this.index, this.cocktail) {
-    cock.fetchCockDetail(this.cocktail).then((val) => setState(() {
+    fetchCockDetail(this.cocktail).then((val) => setState(() {
           cocktail = val;
         }));
   }
