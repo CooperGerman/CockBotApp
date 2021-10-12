@@ -1,4 +1,3 @@
-import 'layout_manager.dart';
 import 'physical.dart';
 
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class _LiquidViewerState extends State<LiquidViewer> {
     //------------
     List<Text> liqlist = [
       Text(
-        'Ingredients:',
+        'Liquids:',
         style: const TextStyle(fontWeight: FontWeight.bold),
         // textAlign: TextAlign.left,
       ),
@@ -42,16 +41,15 @@ class _LiquidViewerState extends State<LiquidViewer> {
     //------------
 
     final middleContent = Container(
-        // height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(insetval),
-        color: Theme.of(context).primaryColor,
-        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Container(
-              alignment: Alignment.centerLeft,
-              width: MediaQuery.of(context).size.width / 3 - insetval,
-              child: Column(children: liqlist)),
-        ]));
+      // height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width - insetval,
+      padding: EdgeInsets.all(insetval),
+      color: Theme.of(context).primaryColor,
+      child: Container(
+          alignment: Alignment.topLeft,
+          width: MediaQuery.of(context).size.width - insetval,
+          child: Column(children: liqlist)),
+    );
     //------------
     // scaffold
     //------------

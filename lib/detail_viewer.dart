@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/post_cock.dart';
 import 'layout_manager.dart';

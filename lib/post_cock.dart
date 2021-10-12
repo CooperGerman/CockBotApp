@@ -1,11 +1,22 @@
 import 'dart:convert';
 import 'package:cockbotapp/cock.dart';
-
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 Future<http.Response> postCock(Cocktail cock) {
+  String add = "";
+  if ((defaultTargetPlatform == TargetPlatform.windows) |
+      (defaultTargetPlatform == TargetPlatform.macOS) |
+      (defaultTargetPlatform == TargetPlatform.linux)) {
+    add = "http://localhost:8001/";
+  }
+  if ((defaultTargetPlatform == TargetPlatform.iOS) |
+      (defaultTargetPlatform == TargetPlatform.android) |
+      (defaultTargetPlatform == TargetPlatform.fuchsia)) {
+    add = "http://10.0.2.2:8001/";
+  }
   return http.post(
-    Uri.parse('http://10.0.2.2:8001/'),
+    Uri.parse(add),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
