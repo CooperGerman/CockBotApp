@@ -30,8 +30,8 @@ class Cocktail {
 
 Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
   List<Cocktail> cockList = [];
+  Cocktail cock;
   for (var ingredient in ingredients) {
-    print('Searching cocktail with ingrtedient ' + ingredient);
     final response = await http.get(Uri.parse(
         'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' +
             ingredient));
@@ -41,7 +41,8 @@ Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
       // then parse the JSON.
       Map decoded = jsonDecode(response.body);
       for (dynamic drink in decoded['drinks']) {
-        cockList.add(Cocktail.fromJson(drink));
+        cock = Cocktail.fromJson(drink);
+        fetchCockDetail(cock, ingredients).then((val) => cockList.add(val));
       }
     } else {
       // If the server did not return a 200 OK response,

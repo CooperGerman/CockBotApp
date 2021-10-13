@@ -87,8 +87,7 @@ class _LayoutManagerState extends State<LayoutManager> {
 
   _LayoutManagerState() {
     fetchLiquidsList().then((val1) => setState(() {
-          liquids = val1;
-          fetchCockList(liquids).then((val2) => setState(() {
+          fetchCockList(val1).then((val2) => setState(() {
                 _cockl = val2;
               }));
         }));
@@ -113,28 +112,10 @@ class _LayoutManagerState extends State<LayoutManager> {
   }
 }
 
-class CockView extends StatefulWidget {
+class CockView extends StatelessWidget {
   const CockView(this.index, this.cocktail);
   final Cocktail cocktail;
   final int index;
-  @override
-  _CockViewState createState() {
-    return _CockViewState(this.index, this.cocktail);
-  }
-}
-
-class _CockViewState extends State<CockView> {
-  Cocktail cocktail;
-  List<String> liquids = [];
-  final int index;
-  _CockViewState(this.index, this.cocktail) {
-    fetchLiquidsList().then((val1) => setState(() {
-          fetchCockDetail(this.cocktail, val1).then((val) => setState(() {
-                cocktail = val;
-              }));
-        }));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
