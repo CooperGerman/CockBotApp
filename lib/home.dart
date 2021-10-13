@@ -28,7 +28,7 @@ const List<StaggeredTile> _tiles = <StaggeredTile>[
 
 List<Widget> _children = const <Widget>[
   HomeHeaderTile('Choice', Colors.orange),
-  HomeTile('Cocktails', Colors.orangeAccent, layout_manager),
+  HomeTile('Available Cocktails', Colors.orangeAccent, layout_manager),
   HomeTile('Available Liquids', Colors.orangeAccent, liquid_viewer),
   //HomeTile('test', Colors.pink, exampleTests),
 ];

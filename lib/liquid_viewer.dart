@@ -27,12 +27,13 @@ class _LiquidViewerState extends State<LiquidViewer> {
       Text(
         'Liquids:',
         style: const TextStyle(fontWeight: FontWeight.bold),
-        // textAlign: TextAlign.left,
+        textAlign: TextAlign.start,
       ),
     ];
     for (String liq in liquids) {
       liqlist.add(Text(
         liq,
+        textAlign: TextAlign.start,
         style: const TextStyle(color: Colors.grey),
       ));
     }

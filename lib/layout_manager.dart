@@ -1,6 +1,7 @@
 // import 'dart:math';
 import 'dart:typed_data';
 import 'package:cockbotapp/cock.dart';
+import 'package:cockbotapp/physical.dart';
 import 'routes.dart';
 
 import 'package:flutter/material.dart';
@@ -82,10 +83,14 @@ class LayoutManager extends StatefulWidget {
 
 class _LayoutManagerState extends State<LayoutManager> {
   List<Cocktail> _cockl = [];
+  List<String> liquids = [];
 
   _LayoutManagerState() {
-    fetchCockList('rum').then((val) => setState(() {
-          _cockl = val;
+    fetchLiquidsList().then((val1) => setState(() {
+          liquids = val1;
+          fetchCockList(liquids).then((val2) => setState(() {
+                _cockl = val2;
+              }));
         }));
   }
 
