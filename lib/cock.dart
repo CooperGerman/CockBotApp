@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-// import 'dart:html';
 import 'package:http/http.dart' as http;
 
 class Cocktail {
@@ -11,6 +10,7 @@ class Cocktail {
   String prefGlass = '';
   String instructions = '';
   List<String> ingredients = [];
+  List<String> missing = [];
   List<String> measures = [];
 
   Cocktail({
@@ -54,7 +54,8 @@ Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
   return cockList;
 }
 
-Future<Cocktail> fetchCockDetail(Cocktail cocktail) async {
+Future<Cocktail> fetchCockDetail(
+    Cocktail cocktail, List<String> ingredients) async {
   final response = await http.get(Uri.parse(
       'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' +
           cocktail.id));
@@ -63,21 +64,22 @@ Future<Cocktail> fetchCockDetail(Cocktail cocktail) async {
     // If the server did return a 200 OK response,
     // then parse the JSON.
     Map decoded = jsonDecode(response.body);
+    String ing = "";
     cocktail.isAlchool = decoded['drinks'][0]['strAlcoholic'];
     cocktail.prefGlass = decoded['drinks'][0]['strGlass'];
     cocktail.instructions = decoded['drinks'][0]['strInstructions'];
     for (var i = 1; i < 16; i++) {
       if (decoded['drinks'][0]['strIngredient' + i.toString()] != null) {
-        cocktail.ingredients
-            .add(decoded['drinks'][0]['strIngredient' + i.toString()]);
-        // } else {
-        //   cocktail.ingredients.add('null');
+        ing = decoded['drinks'][0]['strIngredient' + i.toString()];
+        if (ingredients.contains(ing)) {
+          cocktail.ingredients.add(ing);
+        } else {
+          cocktail.missing.add(ing);
+        }
       }
       if (decoded['drinks'][0]['strMeasure' + i.toString()] != null) {
         cocktail.measures
             .add(decoded['drinks'][0]['strMeasure' + i.toString()]);
-        // } else {
-        //   cocktail.measures.add('null');
       }
     }
     return cocktail;

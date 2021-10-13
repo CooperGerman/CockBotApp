@@ -25,6 +25,12 @@ class DetailViewer extends StatelessWidget {
         style: const TextStyle(color: Colors.grey),
       ));
     }
+    for (String ing in cocktail.missing) {
+      ingredients.add(Text(
+        ing,
+        style: const TextStyle(color: Colors.red),
+      ));
+    }
     //------------
     // middle content
     //------------

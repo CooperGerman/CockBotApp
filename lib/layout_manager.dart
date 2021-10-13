@@ -125,10 +125,13 @@ class CockView extends StatefulWidget {
 
 class _CockViewState extends State<CockView> {
   Cocktail cocktail;
+  List<String> liquids = [];
   final int index;
   _CockViewState(this.index, this.cocktail) {
-    fetchCockDetail(this.cocktail).then((val) => setState(() {
-          cocktail = val;
+    fetchLiquidsList().then((val1) => setState(() {
+          fetchCockDetail(this.cocktail, val1).then((val) => setState(() {
+                cocktail = val;
+              }));
         }));
   }
 
