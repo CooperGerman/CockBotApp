@@ -99,15 +99,17 @@ class _LayoutManagerState extends State<LayoutManager> {
       appBar: AppBar(
         title: const Text('Cocktails'),
       ),
-      body: StaggeredGridView.countBuilder(
-        primary: false,
-        crossAxisCount: 4,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
-        itemBuilder: (context, index) =>
-            CockView(index, _cockl.elementAt(index)),
-        staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-      ),
+      body: _cockl.length > 2
+          ? StaggeredGridView.countBuilder(
+              primary: false,
+              crossAxisCount: 4,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 4,
+              itemBuilder: (context, index) =>
+                  CockView(index, _cockl.elementAt(index)),
+              staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
@@ -118,39 +120,77 @@ class CockView extends StatelessWidget {
   final int index;
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: InkWell(
-            onLongPress: () => Navigator.of(context)
-                .pushNamed(detail_viewer, arguments: cocktail),
-            child: Column(
-              children: <Widget>[
-                Stack(
+    return cocktail.isComplete
+        ? Card(
+            color: Colors.lightGreen.shade300,
+            child: InkWell(
+                onLongPress: () => Navigator.of(context)
+                    .pushNamed(detail_viewer, arguments: cocktail),
+                child: Column(
                   children: <Widget>[
-                    //Center(child: CircularProgressIndicator()),
-                    Center(
-                      child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image: cocktail.imgLink,
-                      ),
+                    Stack(
+                      children: <Widget>[
+                        //Center(child: CircularProgressIndicator()),
+                        Center(
+                          child: FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            image: cocktail.imgLink,
+                          ),
+                        ),
+                      ],
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            cocktail.name,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            cocktail.isAlchool,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        cocktail.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                )))
+        : Card(
+            child: InkWell(
+                onLongPress: () => Navigator.of(context)
+                    .pushNamed(detail_viewer, arguments: cocktail),
+                child: Column(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        //Center(child: CircularProgressIndicator()),
+                        Center(
+                          child: FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            image: cocktail.imgLink,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            cocktail.name,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            cocktail.isAlchool,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
                       ),
-                      Text(
-                        cocktail.isAlchool,
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            )));
+                    )
+                  ],
+                )));
   }
 }
