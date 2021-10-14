@@ -6,6 +6,7 @@ class Cocktail {
   final String name;
   final String imgLink;
   final String id;
+  bool isComplete = false;
   String isAlchool = '';
   String prefGlass = '';
   String instructions = '';
@@ -44,6 +45,11 @@ Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
         cock = Cocktail.fromJson(drink);
         fetchCockDetail(cock, ingredients).then((val) => cockList.add(val));
       }
+      for (cock in cockList) {
+        if (cock.missing.isEmpty) {
+          cock.isComplete = true;
+        }
+      }
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -69,6 +75,7 @@ Future<Cocktail> fetchCockDetail(
     cocktail.isAlchool = decoded['drinks'][0]['strAlcoholic'];
     cocktail.prefGlass = decoded['drinks'][0]['strGlass'];
     cocktail.instructions = decoded['drinks'][0]['strInstructions'];
+    // 16 because of hardcoded number of ingredients
     for (var i = 1; i < 16; i++) {
       if (decoded['drinks'][0]['strIngredient' + i.toString()] != null) {
         ing = decoded['drinks'][0]['strIngredient' + i.toString()];

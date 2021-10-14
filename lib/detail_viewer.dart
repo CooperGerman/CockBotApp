@@ -1,8 +1,15 @@
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/post_cock.dart';
+// import 'package:cockbotapp/post_cock.dart';
+import 'package:cockbotapp/routes.dart';
 import 'layout_manager.dart';
 
 import 'package:flutter/material.dart';
+
+void postNprogress(Cocktail cocktail, context) {
+  postCock(cocktail);
+  Navigator.of(context).pushNamed(pour_progress, arguments: cocktail);
+}
 
 class DetailViewer extends StatelessWidget {
   final double insetval = 10.0;
@@ -89,7 +96,8 @@ class DetailViewer extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               // primary: Theme.of(context).backgroundColor
               primary: Colors.orangeAccent),
-          onPressed: () => {postCock(cocktail)},
+          // onPressed: () => {postCock(cocktail)},
+          onPressed: () => {postNprogress(cocktail, context)},
           child: Text(
             "Pour this Cock !",
             style: const TextStyle(

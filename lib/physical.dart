@@ -37,3 +37,38 @@ Future<List<String>> fetchLiquidsList() async {
     throw Exception('Failed to load Cocktail list from ' + add);
   }
 }
+
+Future<double> fetchPouringStatus() async {
+  String add = "";
+  if ((defaultTargetPlatform == TargetPlatform.windows) |
+      (defaultTargetPlatform == TargetPlatform.macOS) |
+      (defaultTargetPlatform == TargetPlatform.linux)) {
+    add = "http://localhost:8001/PouringStatus/";
+  }
+  if ((defaultTargetPlatform == TargetPlatform.iOS) |
+      (defaultTargetPlatform == TargetPlatform.android) |
+      (defaultTargetPlatform == TargetPlatform.fuchsia)) {
+    add = "http://10.0.2.2:8001/PouringStatus/";
+  }
+
+  final response = await http.get(Uri.parse(add), headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Content-type": "text/json"
+  });
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    Map decoded = jsonDecode(response.body);
+    print('Fetched ' + decoded['status'].toString());
+    if (decoded['status'] == null) {
+      return 0;
+    } else {
+      return decoded['status'];
+    }
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load Cocktail list from ' + add);
+  }
+}
