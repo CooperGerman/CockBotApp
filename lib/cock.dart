@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:cockbotapp/cock_filters.dart' as cockf;
 
 class Cocktail {
   final String name;
@@ -19,6 +20,17 @@ class Cocktail {
     required this.imgLink,
     required this.id,
   });
+
+  bool isToBeDisplayed() {
+    if (cockf.noAlchool &
+        !(this.isAlchool.contains(RegExp('non', caseSensitive: false)))) {
+      return false;
+    }
+    if (cockf.onlyComplete & !this.isComplete) {
+      return false;
+    }
+    return true;
+  }
 
   factory Cocktail.fromJson(dynamic drink) {
     return Cocktail(
@@ -43,7 +55,8 @@ Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
       Map decoded = jsonDecode(response.body);
       for (dynamic drink in decoded['drinks']) {
         cock = Cocktail.fromJson(drink);
-        fetchCockDetail(cock, ingredients).then((val) => cockList.add(val));
+        fetchCockDetail(cock, ingredients).then(
+            (val) => isInCockList(val, cockList) ? null : cockList.add(val));
       }
       for (cock in cockList) {
         if (cock.missing.isEmpty) {
@@ -98,4 +111,13 @@ Future<Cocktail> fetchCockDetail(
         'Failed to load Cocktail list from https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' +
             cocktail.id);
   }
+}
+
+bool isInCockList(Cocktail val, List<Cocktail> cockList) {
+  for (Cocktail cock in cockList) {
+    if (val.name == cock.name) {
+      return true;
+    }
+  }
+  return false;
 }

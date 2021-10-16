@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/physical.dart';
+import 'package:cockbotapp/cock_filters.dart';
 import 'routes.dart';
 
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class _LayoutManagerState extends State<LayoutManager> {
   _LayoutManagerState() {
     fetchLiquidsList().then((val1) => setState(() {
           fetchCockList(val1).then((val2) => setState(() {
-                _cockl = val2;
+                _cockl = filterCockList(val2);
               }));
         }));
   }
@@ -99,7 +100,7 @@ class _LayoutManagerState extends State<LayoutManager> {
       appBar: AppBar(
         title: const Text('Cocktails'),
       ),
-      body: _cockl.length > 2
+      body: _cockl.length > 4
           ? StaggeredGridView.countBuilder(
               primary: false,
               crossAxisCount: 4,
@@ -107,9 +108,16 @@ class _LayoutManagerState extends State<LayoutManager> {
               crossAxisSpacing: 4,
               itemBuilder: (context, index) =>
                   CockView(index, _cockl.elementAt(index)),
-              staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+              staggeredTileBuilder: (index) => StaggeredTile.fit(
+                  MediaQuery.of(context).size.width > 750 ? 1 : 2),
             )
           : Center(child: CircularProgressIndicator()),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.of(context).pushNamed(cock_filters),
+        label: const Text('Filters'),
+        icon: const Icon(Icons.local_bar_outlined),
+        backgroundColor: Colors.orangeAccent,
+      ),
     );
   }
 }
@@ -131,16 +139,18 @@ class CockView extends StatelessWidget {
                     Stack(
                       children: <Widget>[
                         //Center(child: CircularProgressIndicator()),
+
                         Center(
                           child: FadeInImage.memoryNetwork(
                             placeholder: kTransparentImage,
                             image: cocktail.imgLink,
+                            fit: BoxFit.fitHeight,
                           ),
-                        ),
+                        )
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: <Widget>[
                           Text(
@@ -176,7 +186,7 @@ class CockView extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: <Widget>[
                           Text(

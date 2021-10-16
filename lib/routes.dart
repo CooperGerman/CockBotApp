@@ -4,6 +4,7 @@ import 'layout_manager.dart';
 import 'detail_viewer.dart';
 import 'liquid_viewer.dart';
 import 'pour_progress.dart';
+import 'cock_filters.dart';
 import 'home.dart';
 
 const String homeRoute = '/';
@@ -12,6 +13,7 @@ const String layout_manager = '/layout_manager';
 const String detail_viewer = '/detail_viewer';
 const String liquid_viewer = '/liquid_viewer';
 const String pour_progress = '/pour_progress';
+const String cock_filters = '/cock_filters';
 
 Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   homeRoute: (BuildContext context) => Home(),
@@ -19,4 +21,5 @@ Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   detail_viewer: (BuildContext context) => DetailViewer(),
   liquid_viewer: (BuildContext context) => LiquidViewer(),
   pour_progress: (BuildContext context) => PourProgress(),
+  cock_filters: (BuildContext context) => CockFilters(),
 };

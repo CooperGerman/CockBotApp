@@ -1,13 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
 import 'routes.dart';
 
 const List<StaggeredTile> _tiles = <StaggeredTile>[
-  const StaggeredTile.count(2, 1),
-  const StaggeredTile.count(1, 1),
-  const StaggeredTile.count(1, 1),
-  // const StaggeredTile.count(1, 1),
+  // const StaggeredTile.count(2, 1),
+  const StaggeredTile.count(1, 0.5),
+  const StaggeredTile.count(1, 0.5),
+  const StaggeredTile.count(2, 0.5),
   // const StaggeredTile.count(1, 1),
   // const StaggeredTile.count(2, 1),
   // const StaggeredTile.count(1, 1),
@@ -27,9 +28,10 @@ const List<StaggeredTile> _tiles = <StaggeredTile>[
 ];
 
 List<Widget> _children = const <Widget>[
-  HomeHeaderTile('Choice', Colors.orange),
+  // HomeHeaderTile('Choice', Colors.orange),
   HomeTile('Available Cocktails', Colors.orangeAccent, layout_manager),
   HomeTile('Available Liquids', Colors.orangeAccent, liquid_viewer),
+  HomeTile('Filters', Colors.orangeAccent, cock_filters),
   //HomeTile('test', Colors.pink, exampleTests),
 ];
 
@@ -38,7 +40,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('CockBotApp'),
+          title: Text('CockBotApp'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),

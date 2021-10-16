@@ -1,9 +1,9 @@
-import 'dart:html';
-import 'dart:io';
+// import 'dart:html';
+// import 'dart:io';
 
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/physical.dart';
-import 'package:cockbotapp/post_cock.dart';
+// import 'package:cockbotapp/post_cock.dart';
 import 'package:flutter/material.dart';
 
 class PourProgress extends StatefulWidget {
