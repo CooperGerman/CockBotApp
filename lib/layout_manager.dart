@@ -96,18 +96,20 @@ class _LayoutManagerState extends State<LayoutManager> {
 
   @override
   Widget build(BuildContext context) {
+    int cockLen = _cockl.length;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cocktails'),
       ),
-      body: _cockl.length > 4
+      body: cockLen > 4
           ? StaggeredGridView.countBuilder(
               primary: false,
               crossAxisCount: 4,
               mainAxisSpacing: 4,
               crossAxisSpacing: 4,
-              itemBuilder: (context, index) =>
-                  CockView(index, _cockl.elementAt(index)),
+              itemBuilder: (context, index) => index < cockLen
+                  ? CockView(index, _cockl.elementAt(index))
+                  : Text(''),
               staggeredTileBuilder: (index) => StaggeredTile.fit(
                   MediaQuery.of(context).size.width > 750 ? 1 : 2),
             )
