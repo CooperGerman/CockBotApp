@@ -77,9 +77,7 @@ final Uint8List kTransparentImage = Uint8List.fromList(<int>[
 
 class LayoutManager extends StatefulWidget {
   @override
-  _LayoutManagerState createState() {
-    return new _LayoutManagerState();
-  }
+  _LayoutManagerState createState() => new _LayoutManagerState();
 }
 
 class _LayoutManagerState extends State<LayoutManager> {
@@ -115,7 +113,8 @@ class _LayoutManagerState extends State<LayoutManager> {
             )
           : Center(child: CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(context).pushNamed(cock_filters),
+        onPressed: () =>
+            Navigator.of(context).pushReplacementNamed(cock_filters),
         label: const Text('Filters'),
         icon: const Icon(Icons.local_bar_outlined),
         backgroundColor: Colors.orangeAccent,
@@ -140,8 +139,6 @@ class CockView extends StatelessWidget {
                   children: <Widget>[
                     Stack(
                       children: <Widget>[
-                        //Center(child: CircularProgressIndicator()),
-
                         Center(
                           child: FadeInImage.memoryNetwork(
                             placeholder: kTransparentImage,
@@ -178,7 +175,6 @@ class CockView extends StatelessWidget {
                   children: <Widget>[
                     Stack(
                       children: <Widget>[
-                        //Center(child: CircularProgressIndicator()),
                         Center(
                           child: FadeInImage.memoryNetwork(
                             placeholder: kTransparentImage,

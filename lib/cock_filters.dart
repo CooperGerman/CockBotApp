@@ -1,4 +1,5 @@
 import 'package:cockbotapp/cock.dart';
+import 'package:cockbotapp/home.dart';
 import 'package:cockbotapp/routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,8 @@ class _CockFiltersState extends State<CockFilters> {
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
-          onPressed: () => {Navigator.of(context).pushNamed(layout_manager)},
+          onPressed: () =>
+              {Navigator.of(context).pushReplacementNamed(layout_manager)},
           child: Text(
             "Apply",
             style: const TextStyle(
@@ -88,9 +90,9 @@ class _CockFiltersState extends State<CockFilters> {
           ),
         ));
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Filters '),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Filters '),
+      // ),
       body: ListView(children: [
         Padding(
             padding: EdgeInsets.all(10),
