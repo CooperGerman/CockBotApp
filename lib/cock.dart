@@ -10,6 +10,7 @@ class Cocktail {
   bool isComplete = false;
   String isAlchool = '';
   String prefGlass = '';
+  String category = '';
   String instructions = '';
   List<String> ingredients = [];
   List<String> missing = [];
@@ -27,6 +28,10 @@ class Cocktail {
       return false;
     }
     if (cockf.onlyComplete & !this.isComplete) {
+      return false;
+    }
+    if (cockf.categories[this.category] == false) {
+      // print(this.name + '--> ' + this.category + ' Non valid category');
       return false;
     }
     return true;
@@ -87,6 +92,7 @@ Future<Cocktail> fetchCockDetail(
     String ing = "";
     cocktail.isAlchool = decoded['drinks'][0]['strAlcoholic'];
     cocktail.prefGlass = decoded['drinks'][0]['strGlass'];
+    cocktail.category = decoded['drinks'][0]['strCategory'];
     cocktail.instructions = decoded['drinks'][0]['strInstructions'];
     // 16 because of hardcoded number of ingredients
     for (var i = 1; i < 16; i++) {

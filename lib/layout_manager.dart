@@ -162,7 +162,7 @@ class CockView extends StatelessWidget {
                                 color: Colors.black),
                           ),
                           Text(
-                            cocktail.isAlchool,
+                            cocktail.category,
                             style: const TextStyle(color: Colors.black),
                           ),
                         ],
@@ -196,7 +196,7 @@ class CockView extends StatelessWidget {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            cocktail.isAlchool,
+                            cocktail.category,
                             style: const TextStyle(color: Colors.grey),
                           ),
                         ],

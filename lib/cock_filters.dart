@@ -1,5 +1,6 @@
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CockFilters extends StatefulWidget {
@@ -10,10 +11,24 @@ class CockFilters extends StatefulWidget {
 }
 
 bool noAlchool = false;
+Map categories = {
+  "Ordinary Drink": true,
+  "Cocktail": true,
+  "Milk / Float / Shake": false,
+  "Other/Unknown": true,
+  "Cocoa": false,
+  "Shot": true,
+  "Coffee / Tea": false,
+  "Homemade Liqueur": false,
+  "Punch / Party Drink": true,
+  "Beer": false,
+  "Soft Drink / Soda": true
+};
 bool onlyComplete = false;
 bool allowMissingNonLiquids = true;
 
 class _CockFiltersState extends State<CockFilters> {
+  List<Container> categoriesBoxes = [];
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
@@ -28,12 +43,44 @@ class _CockFiltersState extends State<CockFilters> {
       return Colors.red;
     }
 
+    //##########################################################################
+    // Apply button
+    //##########################################################################
+    //reinitilaize the list after refresh so it does not accumulate
+    categoriesBoxes = [
+      Container(
+          child: Text('Categories',
+              style: const TextStyle(fontWeight: FontWeight.bold)))
+    ];
+    for (String cat in categories.keys) {
+      categoriesBoxes.add(Container(
+          child: Row(children: [
+        Checkbox(
+            checkColor: Colors.white,
+            fillColor: MaterialStateProperty.resolveWith(getColor),
+            value: categories[cat],
+            onChanged: (bool? value) {
+              setState(() {
+                categories[cat] = value!;
+              });
+            }),
+        Text(cat)
+      ])));
+    }
+    Widget categoriesW = Container(
+        padding: EdgeInsets.all(10),
+        color: Colors.grey.shade800,
+        alignment: Alignment.topCenter,
+        child: Column(children: categoriesBoxes));
+    //##########################################################################
+    // Apply button
+    //##########################################################################
     final readButton = Container(
         // padding: EdgeInsets.symmetric(vertical: 16.0),
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
-          onPressed: () => Navigator.of(context).pushNamed(layout_manager),
+          onPressed: () => {Navigator.of(context).pushNamed(layout_manager)},
           child: Text(
             "Apply",
             style: const TextStyle(
@@ -41,60 +88,59 @@ class _CockFiltersState extends State<CockFilters> {
           ),
         ));
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Filters '),
-      // ),
-      body: Container(
-          width: MediaQuery.of(context).size.width / 1.5,
-          child: ListView(children: [
-            Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                      value: noAlchool,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          noAlchool = value!;
-                        });
-                      }),
-                  Flexible(child: Text('Show only Alchool free drinks.'))
-                ])),
-            Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                      value: allowMissingNonLiquids,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          allowMissingNonLiquids = value!;
-                        });
-                      }),
-                  Flexible(
-                      child: Text(
-                          'Allow missing non-liquids. This option enables to extend cocktail research with cocktails lacking non liquid ingredients such as sugar, salt, lemon scratches ... Those could indeed be added manually afterwards.',
-                          softWrap: true))
-                ])),
-            Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                      value: onlyComplete,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          onlyComplete = value!;
-                        });
-                      }),
-                  Flexible(
-                      child: Text(
-                          'All ingredients must be available in the machine. (Might heavily reduce the number of displayed cocktails)'))
-                ]))
-          ])),
+      appBar: AppBar(
+        title: Text('Filters '),
+      ),
+      body: ListView(children: [
+        Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(children: [
+              Checkbox(
+                  checkColor: Colors.white,
+                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                  value: noAlchool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      noAlchool = value!;
+                    });
+                  }),
+              Flexible(child: Text('Show only Alchool free drinks.'))
+            ])),
+        Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(children: [
+              Checkbox(
+                  checkColor: Colors.white,
+                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                  value: allowMissingNonLiquids,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      allowMissingNonLiquids = value!;
+                    });
+                  }),
+              Flexible(
+                  child: Text(
+                      'Allow missing non-liquids. This option enables to extend cocktail research with cocktails lacking non liquid ingredients such as sugar, salt, lemon scratches ... Those could indeed be added manually afterwards.',
+                      softWrap: true))
+            ])),
+        Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(children: [
+              Checkbox(
+                  checkColor: Colors.white,
+                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                  value: onlyComplete,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      onlyComplete = value!;
+                    });
+                  }),
+              Flexible(
+                  child: Text(
+                      'All ingredients must be available in the machine. (Might heavily reduce the number of displayed cocktails)'))
+            ])),
+        categoriesW
+      ]),
       bottomNavigationBar: readButton,
     );
   }
