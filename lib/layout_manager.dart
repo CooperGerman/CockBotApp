@@ -129,6 +129,37 @@ class CockView extends StatelessWidget {
   final int index;
   @override
   Widget build(BuildContext context) {
+    Widget cockImage;
+    if (cocktail.isAlchool.contains(RegExp('non', caseSensitive: false))) {
+      cockImage = Stack(
+        children: <Widget>[
+          Center(
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: cocktail.imgLink,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+          Image(
+              alignment: Alignment.topRight,
+              width: 50,
+              image: AssetImage('../ressources/5627028.png'))
+        ],
+      );
+    } else {
+      cockImage = Stack(
+        children: <Widget>[
+          Center(
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: cocktail.imgLink,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        ],
+      );
+    }
+
     return cocktail.isComplete
         ? Card(
             color: Colors.lightGreen.shade300,
@@ -137,27 +168,19 @@ class CockView extends StatelessWidget {
                     .pushNamed(detail_viewer, arguments: cocktail),
                 child: Column(
                   children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Center(
-                          child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            image: cocktail.imgLink,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        )
-                      ],
-                    ),
+                    cockImage,
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            cocktail.name,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
+                          Row(children: [
+                            Text(
+                              cocktail.name,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                          ]),
                           Text(
                             cocktail.category,
                             style: const TextStyle(color: Colors.black),
@@ -173,16 +196,7 @@ class CockView extends StatelessWidget {
                     .pushNamed(detail_viewer, arguments: cocktail),
                 child: Column(
                   children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Center(
-                          child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            image: cocktail.imgLink,
-                          ),
-                        ),
-                      ],
-                    ),
+                    cockImage,
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(

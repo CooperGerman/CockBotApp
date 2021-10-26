@@ -1,7 +1,5 @@
 import 'package:cockbotapp/cock.dart';
-import 'package:cockbotapp/home.dart';
 import 'package:cockbotapp/routes.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CockFilters extends StatefulWidget {
@@ -13,17 +11,17 @@ class CockFilters extends StatefulWidget {
 
 bool noAlchool = false;
 Map categories = {
-  "Ordinary Drink": true,
-  "Cocktail": true,
+  "Ordinary Drink": false,
+  "Cocktail": false,
   "Milk / Float / Shake": false,
-  "Other/Unknown": true,
+  "Other/Unknown": false,
   "Cocoa": false,
-  "Shot": true,
+  "Shot": false,
   "Coffee / Tea": false,
   "Homemade Liqueur": false,
   "Punch / Party Drink": true,
   "Beer": false,
-  "Soft Drink / Soda": true
+  "Soft Drink / Soda": false
 };
 bool onlyComplete = false;
 bool allowMissingNonLiquids = true;
@@ -106,7 +104,16 @@ class _CockFiltersState extends State<CockFilters> {
                       noAlchool = value!;
                     });
                   }),
-              Flexible(child: Text('Show only Alchool free drinks.'))
+              Flexible(
+                  child: Row(children: [
+                Text('Show only Alchool free drinks '),
+                Text(
+                  '(Caution using this option might cause sobriety)',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.orangeAccent),
+                ),
+                Text('.'),
+              ]))
             ])),
         Padding(
             padding: EdgeInsets.all(10),

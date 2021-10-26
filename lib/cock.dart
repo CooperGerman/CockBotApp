@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:cockbotapp/cock_filters.dart' as cockf;
 
@@ -9,6 +10,7 @@ class Cocktail {
   final String id;
   bool isComplete = false;
   String isAlchool = '';
+  String tag = Uuid().v4();
   String prefGlass = '';
   String category = '';
   String instructions = '';

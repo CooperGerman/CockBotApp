@@ -29,6 +29,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   # scroll_snap_list: ^0.8.2
   flutter_staggered_grid_view: ^0.4.0
+  uuid: ^3.0.5
   # device_info_plus: ^3.0.1
   # carousel_slider: ^4.0.0
   # web_scraper: ^0.1.4
@@ -50,7 +51,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - ./ressources/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

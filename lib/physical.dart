@@ -38,7 +38,7 @@ Future<List<String>> fetchLiquidsList() async {
   }
 }
 
-Future<double> fetchPouringStatus() async {
+Future<Map> fetchPouringStatus() async {
   String add = "";
   if ((defaultTargetPlatform == TargetPlatform.windows) |
       (defaultTargetPlatform == TargetPlatform.macOS) |
@@ -60,12 +60,7 @@ Future<double> fetchPouringStatus() async {
     // If the server did return a 200 OK response,
     // then parse the JSON.
     Map decoded = jsonDecode(response.body);
-    print('Fetched ' + decoded['status'].toString());
-    if (decoded['status'] == null) {
-      return 0;
-    } else {
-      return decoded['status'];
-    }
+    return decoded;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
