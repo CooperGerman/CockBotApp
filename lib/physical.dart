@@ -9,12 +9,12 @@ Future<List<String>> fetchLiquidsList() async {
   if ((defaultTargetPlatform == TargetPlatform.windows) |
       (defaultTargetPlatform == TargetPlatform.macOS) |
       (defaultTargetPlatform == TargetPlatform.linux)) {
-    add = "http://localhost:8001/";
+    add = "http://cockbotserver.local:8001/";
   }
   if ((defaultTargetPlatform == TargetPlatform.iOS) |
       (defaultTargetPlatform == TargetPlatform.android) |
       (defaultTargetPlatform == TargetPlatform.fuchsia)) {
-    add = "http://10.0.2.2:8001/";
+    add = "http://cockbotserver.local:8001/";
   }
 
   final response = await http.get(Uri.parse(add), headers: {
@@ -43,12 +43,12 @@ Future<Map> fetchPouringStatus() async {
   if ((defaultTargetPlatform == TargetPlatform.windows) |
       (defaultTargetPlatform == TargetPlatform.macOS) |
       (defaultTargetPlatform == TargetPlatform.linux)) {
-    add = "http://localhost:8001/PouringStatus/";
+    add = "http://cockbotserver.local:8001/PouringStatus/";
   }
   if ((defaultTargetPlatform == TargetPlatform.iOS) |
       (defaultTargetPlatform == TargetPlatform.android) |
       (defaultTargetPlatform == TargetPlatform.fuchsia)) {
-    add = "http://10.0.2.2:8001/PouringStatus/";
+    add = "http://cockbotserver.local:8001/PouringStatus/";
   }
 
   final response = await http.get(Uri.parse(add), headers: {
