@@ -88,9 +88,9 @@ class _CockFiltersState extends State<CockFilters> {
           ),
         ));
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Filters '),
-      // ),
+      appBar: AppBar(
+        title: Text('Filters '),
+      ),
       body: ListView(children: [
         Padding(
             padding: EdgeInsets.all(10),

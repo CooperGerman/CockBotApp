@@ -113,8 +113,7 @@ class _LayoutManagerState extends State<LayoutManager> {
             )
           : Center(child: CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            Navigator.of(context).pushReplacementNamed(cock_filters),
+        onPressed: () => Navigator.of(context).pushNamed(cock_filters),
         label: const Text('Filters'),
         icon: const Icon(Icons.local_bar_outlined),
         backgroundColor: Colors.orangeAccent,
