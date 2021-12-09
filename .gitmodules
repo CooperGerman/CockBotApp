@@ -1,0 +1,3 @@
+[submodule "gitsubmodules/CooperGerman.github.io"]
+	path = gitsubmodules/CooperGerman.github.io
+	url = git@github.com:CooperGerman/CooperGerman.github.io.git
