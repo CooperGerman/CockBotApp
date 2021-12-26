@@ -27,7 +27,7 @@ push:
 	git push origin main
 
 build :
-	flutter build web --web-renderer html
+	flutter build web --web-renderer canvaskit
 
 clean :
 	flutter clean

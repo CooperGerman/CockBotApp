@@ -12,7 +12,7 @@ List<Widget> _children = const <Widget>[
     Image(
         alignment: Alignment.center,
         fit: BoxFit.fitHeight,
-        image: AssetImage('../ressources/AdobeStock_195186798-1440x960.jpeg')),
+        image: AssetImage('ressources/AdobeStock_195186798-1440x960.jpeg')),
     layout_manager,
   ),
   HomeTile(
@@ -21,8 +21,7 @@ List<Widget> _children = const <Widget>[
       Image(
           alignment: Alignment.center,
           fit: BoxFit.fitHeight,
-          image:
-              AssetImage('../ressources/pexels-chris-f-1283219-1440x960.jpg')),
+          image: AssetImage('ressources/pexels-chris-f-1283219-1440x960.jpg')),
       liquid_viewer),
   HomeTile(
       'Filters',
@@ -31,16 +30,16 @@ List<Widget> _children = const <Widget>[
           alignment: Alignment.center,
           fit: BoxFit.fitHeight,
           image: AssetImage(
-              '../ressources/how-to-measure-a-cocktail-using-parts-760305-019-c18ecbbe4af7430fbf1442dc321aea51.jpg')),
+              'ressources/how-to-measure-a-cocktail-using-parts-760305-019-c18ecbbe4af7430fbf1442dc321aea51.jpg')),
       cock_filters),
   HomeTile(
-      'Random Cock',
+      'Random Cocktail',
       Colors.grey,
       Image(
           alignment: Alignment.center,
           fit: BoxFit.fitHeight,
           image: AssetImage(
-              '../ressources/26665-nader-chabaane-sumino-keiko3-ok.jpg')),
+              'ressources/26665-nader-chabaane-sumino-keiko3-ok.jpg')),
       cock_filters),
   //HomeTile('test', Colors.pink, exampleTests),
 ];
