@@ -142,7 +142,7 @@ class CockView extends StatelessWidget {
           Image(
               alignment: Alignment.topRight,
               width: 50,
-              image: AssetImage('../ressources/5627028.png'))
+              image: AssetImage('./ressources/5627028.png'))
         ],
       );
     } else {

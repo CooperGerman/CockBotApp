@@ -1,8 +1,10 @@
 // import 'dart:io';
 
+import 'package:cockbotapp/physical.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'routes.dart';
+import 'physical.dart';
 
 List<Widget> _children = const <Widget>[
   // HomeHeaderTile('Choice', Colors.orange),
@@ -45,6 +47,7 @@ List<Widget> _children = const <Widget>[
 ];
 
 class Home extends StatelessWidget {
+  String titleStr = 'CockBotApp' + (cockMach.isOnline ? " (Offline mode)" : '');
   @override
   Widget build(BuildContext context) {
     List<StaggeredTile> tiles = <StaggeredTile>[
@@ -59,7 +62,7 @@ class Home extends StatelessWidget {
     ];
     return Scaffold(
         appBar: AppBar(
-          title: Text('CockBotApp'),
+          title: Text(titleStr),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
