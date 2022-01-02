@@ -91,13 +91,16 @@ class _LayoutManagerState extends State<LayoutManager> {
               }));
         }));
   }
-
+  Text titleStr = Text(
+    'Cocktails ' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
+    style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
+  );
   @override
   Widget build(BuildContext context) {
     int cockLen = _cockl.length;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cocktails'),
+        title: titleStr,
       ),
       body: cockLen > 4
           ? StaggeredGridView.countBuilder(

@@ -1,5 +1,7 @@
 // import 'dart:io';
 
+import 'dart:html';
+
 import 'package:cockbotapp/physical.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -46,8 +48,19 @@ List<Widget> _children = const <Widget>[
   //HomeTile('test', Colors.pink, exampleTests),
 ];
 
-class Home extends StatelessWidget {
-  String titleStr = 'CockBotApp' + (cockMach.isOnline ? " (Offline mode)" : '');
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() {
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<Home> {
+  // String titleStr = 'CockBotApp' + (cockMach.isOnline ? '' : " (No Machine Connected)");
+  Text titleStr = Text(
+    'CockBotApp' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
+    style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
+  );
   @override
   Widget build(BuildContext context) {
     List<StaggeredTile> tiles = <StaggeredTile>[
@@ -62,7 +75,7 @@ class Home extends StatelessWidget {
     ];
     return Scaffold(
         appBar: AppBar(
-          title: Text(titleStr),
+          title: titleStr,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -19,7 +19,6 @@ class _LiquidViewerState extends State<LiquidViewer> {
   final double insetval = 10.0;
   @override
   Widget build(BuildContext context) {
-    // final cocktail = ModalRoute.of(context)!.settings.arguments as Cocktail;
     //------------
     // ingredients
     //------------
@@ -54,9 +53,14 @@ class _LiquidViewerState extends State<LiquidViewer> {
     //------------
     // scaffold
     //------------
+    Text titleStr = Text(
+      'Available Liquids ' +
+          (cockMach.isOnline ? '' : ' (No Machine Connected)'),
+      style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
+    );
     return Scaffold(
       appBar: AppBar(
-        title: Text('Available Liquids '),
+        title: titleStr,
       ),
       body: ListView(children: <Widget>[
         Padding(
