@@ -4,7 +4,7 @@ import 'physical.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
-import 'package:cockbotapp/cock_filters.dart' as cockf;
+import 'package:cockbotapp/cock_filters.dart';
 
 class Cocktail {
   final String name;
@@ -27,14 +27,14 @@ class Cocktail {
   });
 
   bool isToBeDisplayed() {
-    if (cockf.noAlchool &
+    if (cockFiltVals.noAlchool &
         !(this.isAlchool.contains(RegExp('non', caseSensitive: false)))) {
       return false;
     }
-    if (cockf.onlyComplete & !this.isComplete) {
+    if (cockFiltVals.onlyComplete & !this.isComplete) {
       return false;
     }
-    if (cockf.containsLiquid) {
+    if (cockFiltVals.containsLiquid) {
       for (var ing in this.ingredients) {
         if (cockMach.liquids.contains(ing)) {
           return true;
@@ -42,7 +42,7 @@ class Cocktail {
       }
       return false;
     }
-    if (cockf.categories[this.category] == false) {
+    if (cockFiltVals.categories[this.category] == false) {
       // print(this.name + '--> ' + this.category + ' Non valid category');
       return false;
     }
@@ -191,6 +191,7 @@ Future<Cocktail> fetchCockDetail(
     // If the server did return a 200 OK response,
     // then parse the JSON.
     // Map decoded = jsonDecode(response.data);
+    print(add);
     Map decoded = (response.data);
     String ing = "";
     // 16 because of hardcoded number of ingredients

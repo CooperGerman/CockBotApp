@@ -2,6 +2,8 @@ import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/routes.dart';
 import 'package:flutter/material.dart';
 
+cockFilterValues cockFiltVals = cockFilterValues();
+
 class CockFilters extends StatefulWidget {
   @override
   _CockFiltersState createState() {
@@ -9,23 +11,26 @@ class CockFilters extends StatefulWidget {
   }
 }
 
-bool noAlchool = false;
-Map categories = {
-  "Ordinary Drink": false,
-  "Cocktail": false,
-  "Milk / Float / Shake": false,
-  "Other/Unknown": false,
-  "Cocoa": false,
-  "Shot": false,
-  "Coffee / Tea": false,
-  "Homemade Liqueur": false,
-  "Punch / Party Drink": true,
-  "Beer": false,
-  "Soft Drink / Soda": false
-};
-bool onlyComplete = false;
-bool allowMissingNonLiquids = true;
-bool containsLiquid = true;
+class cockFilterValues {
+  bool all = false;
+  bool noAlchool = false;
+  Map categories = {
+    "Ordinary Drink": false,
+    "Cocktail": false,
+    "Milk / Float / Shake": false,
+    "Other/Unknown": false,
+    "Cocoa": false,
+    "Shot": false,
+    "Coffee / Tea": false,
+    "Homemade Liqueur": false,
+    "Punch / Party Drink": true,
+    "Beer": false,
+    "Soft Drink / Soda": false
+  };
+  bool onlyComplete = false;
+  bool allowMissingNonLiquids = true;
+  bool containsLiquid = false;
+}
 
 class _CockFiltersState extends State<CockFilters> {
   List<Container> categoriesBoxes = [];
@@ -50,18 +55,34 @@ class _CockFiltersState extends State<CockFilters> {
     categoriesBoxes = [
       Container(
           child: Text('Categories',
-              style: const TextStyle(fontWeight: FontWeight.bold)))
+              style: const TextStyle(fontWeight: FontWeight.bold))),
+      Container(
+          child: Row(children: [
+        Checkbox(
+            checkColor: Colors.white,
+            fillColor: MaterialStateProperty.resolveWith(getColor),
+            value: cockFiltVals.all,
+            onChanged: (bool? value) {
+              setState(() {
+                cockFiltVals.all = value!;
+                for (String cat in cockFiltVals.categories.keys) {
+                  cockFiltVals.categories[cat] = cockFiltVals.all;
+                }
+              });
+            }),
+        Text("Set / unset all categories")
+      ]))
     ];
-    for (String cat in categories.keys) {
+    for (String cat in cockFiltVals.categories.keys) {
       categoriesBoxes.add(Container(
           child: Row(children: [
         Checkbox(
             checkColor: Colors.white,
             fillColor: MaterialStateProperty.resolveWith(getColor),
-            value: categories[cat],
+            value: cockFiltVals.categories[cat],
             onChanged: (bool? value) {
               setState(() {
-                categories[cat] = value!;
+                cockFiltVals.categories[cat] = value!;
               });
             }),
         Text(cat)
@@ -99,10 +120,10 @@ class _CockFiltersState extends State<CockFilters> {
               Checkbox(
                   checkColor: Colors.white,
                   fillColor: MaterialStateProperty.resolveWith(getColor),
-                  value: noAlchool,
+                  value: cockFiltVals.noAlchool,
                   onChanged: (bool? value) {
                     setState(() {
-                      noAlchool = value!;
+                      cockFiltVals.noAlchool = value!;
                     });
                   }),
               Flexible(
@@ -122,10 +143,10 @@ class _CockFiltersState extends State<CockFilters> {
               Checkbox(
                   checkColor: Colors.white,
                   fillColor: MaterialStateProperty.resolveWith(getColor),
-                  value: allowMissingNonLiquids,
+                  value: cockFiltVals.allowMissingNonLiquids,
                   onChanged: (bool? value) {
                     setState(() {
-                      allowMissingNonLiquids = value!;
+                      cockFiltVals.allowMissingNonLiquids = value!;
                     });
                   }),
               Flexible(
@@ -139,10 +160,10 @@ class _CockFiltersState extends State<CockFilters> {
               Checkbox(
                   checkColor: Colors.white,
                   fillColor: MaterialStateProperty.resolveWith(getColor),
-                  value: containsLiquid,
+                  value: cockFiltVals.containsLiquid,
                   onChanged: (bool? value) {
                     setState(() {
-                      containsLiquid = value!;
+                      cockFiltVals.containsLiquid = value!;
                     });
                   }),
               Flexible(
@@ -156,10 +177,10 @@ class _CockFiltersState extends State<CockFilters> {
               Checkbox(
                   checkColor: Colors.white,
                   fillColor: MaterialStateProperty.resolveWith(getColor),
-                  value: onlyComplete,
+                  value: cockFiltVals.onlyComplete,
                   onChanged: (bool? value) {
                     setState(() {
-                      onlyComplete = value!;
+                      cockFiltVals.onlyComplete = value!;
                     });
                   }),
               Flexible(
