@@ -25,6 +25,7 @@ Map categories = {
 };
 bool onlyComplete = false;
 bool allowMissingNonLiquids = true;
+bool containsLiquid = true;
 
 class _CockFiltersState extends State<CockFilters> {
   List<Container> categoriesBoxes = [];
@@ -130,6 +131,23 @@ class _CockFiltersState extends State<CockFilters> {
               Flexible(
                   child: Text(
                       'Allow missing non-liquids. This option enables to extend cocktail research with cocktails lacking non liquid ingredients such as sugar, salt, lemon scratches ... Those could indeed be added manually afterwards.',
+                      softWrap: true))
+            ])),
+        Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(children: [
+              Checkbox(
+                  checkColor: Colors.white,
+                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                  value: containsLiquid,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      containsLiquid = value!;
+                    });
+                  }),
+              Flexible(
+                  child: Text(
+                      'If ticked, only drinks that contain at least one liquid from the machine will be shown. (This aims at drastically narrowing down the search scope)',
                       softWrap: true))
             ])),
         Padding(

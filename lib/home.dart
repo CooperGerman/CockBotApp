@@ -12,7 +12,7 @@ List<Widget> _children = const <Widget>[
   // HomeHeaderTile('Choice', Colors.orange),
   HomeTile(
     'Available Cocktails',
-    Colors.grey,
+    Color(0xFF000000),
     Image(
         alignment: Alignment.center,
         fit: BoxFit.fitHeight,
@@ -21,7 +21,7 @@ List<Widget> _children = const <Widget>[
   ),
   HomeTile(
       'Available Liquids',
-      Colors.grey,
+      Color(0xFF000000),
       Image(
           alignment: Alignment.center,
           fit: BoxFit.fitHeight,
@@ -29,7 +29,7 @@ List<Widget> _children = const <Widget>[
       liquid_viewer),
   HomeTile(
       'Filters',
-      Colors.grey,
+      Color(0xFF000000),
       Image(
           alignment: Alignment.center,
           fit: BoxFit.fitHeight,
@@ -38,13 +38,13 @@ List<Widget> _children = const <Widget>[
       cock_filters),
   HomeTile(
       'Random Cocktail',
-      Colors.grey,
+      Color(0xFF000000),
       Image(
           alignment: Alignment.center,
           fit: BoxFit.fitHeight,
           image: AssetImage(
               'ressources/26665-nader-chabaane-sumino-keiko3-ok.jpg')),
-      cock_filters),
+      rand_cock),
   //HomeTile('test', Colors.pink, exampleTests),
 ];
 
@@ -139,37 +139,37 @@ class HomeTile extends StatelessWidget {
       child: InkWell(
           onTap: () => Navigator.of(context).pushNamed(route),
           child: Stack(
+            fit: StackFit.expand,
             children: [
               Center(child: backgroundImage),
-              Center(
+              FittedBox(
+                fit: BoxFit.contain,
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text(
                     title,
                     textAlign: TextAlign.center,
-                    textScaleFactor: 2,
                     style: TextStyle(
-                        fontSize: 40,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 6
-                          ..color = Colors.white),
-                  ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 2,
-                    style: TextStyle(
-                        fontSize: 40,
                         foreground: Paint()
                           ..style = PaintingStyle.stroke
                           ..strokeWidth = 2
+                          // ..color = Colors.white),
                           ..color = Colors.black),
+                  ),
+                ),
+              ),
+              FittedBox(
+                fit: BoxFit.contain,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        foreground: Paint()
+                          // ..style = PaintingStyle.stroke
+                          ..strokeWidth = 1
+                          ..color = Color(0xFF91521F)),
                   ),
                 ),
               ),

@@ -9,17 +9,16 @@ final CockMachine cockMach = CockMachine();
 class CockMachine {
   String add = "http://cockbotserver.local:8001/";
   bool isOnline = false;
+  List<String> liquids = [];
 }
 
 Future<List<String>> fetchLiquidsList() async {
-  List<String> liquidList = [];
-
   try {
     final response =
         await Dio().get(cockMach.add).timeout(Duration(seconds: 10));
     Map decoded = jsonDecode(response.data);
     for (String liquid in decoded.keys) {
-      liquidList.add(liquid);
+      cockMach.liquids.add(liquid);
       cockMach.isOnline = true;
     }
   } on DioError catch (e) {
@@ -35,7 +34,7 @@ Future<List<String>> fetchLiquidsList() async {
     } else if (e.type == "cancel") {
       print(cockMach.add + " cancelled");
     }
-    liquidList = ['*'];
+    cockMach.liquids = ['*'];
   }
   // final response = await http.get(Uri.parse(add), headers: {
   //   "Access-Control-Allow-Origin": "*",
@@ -49,7 +48,7 @@ Future<List<String>> fetchLiquidsList() async {
   //   // then throw an exception.
   //   throw Exception('Failed to load Cocktail list from ' + add);
   // }
-  return liquidList;
+  return cockMach.liquids;
 }
 
 Future<Map> fetchPouringStatus() async {
