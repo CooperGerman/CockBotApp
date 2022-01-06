@@ -5,6 +5,7 @@ import 'detail_viewer.dart';
 import 'liquid_viewer.dart';
 import 'pour_progress.dart';
 import 'cock_filters.dart';
+import 'random_cock.dart';
 import 'home.dart';
 
 const String homeRoute = '/';
@@ -14,6 +15,7 @@ const String detail_viewer = '/detail_viewer';
 const String liquid_viewer = '/liquid_viewer';
 const String pour_progress = '/pour_progress';
 const String cock_filters = '/cock_filters';
+const String rand_cock = '/rand_cock';
 
 Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   homeRoute: (BuildContext context) => Home(),
@@ -22,4 +24,5 @@ Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   liquid_viewer: (BuildContext context) => LiquidViewer(),
   pour_progress: (BuildContext context) => PourProgress(),
   cock_filters: (BuildContext context) => CockFilters(),
+  rand_cock: (BuildContext context) => RandomCock(),
 };
