@@ -1,8 +1,9 @@
 // import 'dart:math';
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/physical.dart';
-import 'package:cockbotapp/cock_filters.dart';
+import 'cock_filters.dart';
 import 'routes.dart';
 
 import 'package:flutter/material.dart';
@@ -77,46 +78,58 @@ final Uint8List kTransparentImage = Uint8List.fromList(<int>[
 
 class LayoutManager extends StatefulWidget {
   @override
-  _LayoutManagerState createState() => new _LayoutManagerState();
+  _LayoutManagerState createState() => _LayoutManagerState();
 }
 
 class _LayoutManagerState extends State<LayoutManager> {
-  List<Cocktail> _cockl = [];
-  List<String> liquids = [];
-
-  _LayoutManagerState() {
-    fetchLiquidsList().then((val1) => setState(() {
-          fetchCockList(val1).then((val2) => setState(() {
-                _cockl = filterCockList(val2);
-              }));
-        }));
+  @override
+  void initState() {
+    super.initState();
   }
+
+  void refreshData() {
+    cockList.filterDisplayed();
+    // this.build(context);
+  }
+
+  FutureOr onGoBack(dynamic value) {
+    refreshData();
+    setState(() {});
+  }
+
+  void navigateFilters() {
+    // Navigator.of(context).pushNamed(cock_filters).then(onGoBack);
+    Route route = MaterialPageRoute(builder: (context) => CockFilters());
+    Navigator.push(context, route).then(onGoBack);
+  }
+
   Text titleStr = Text(
     'Cocktails ' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
     style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
   );
   @override
   Widget build(BuildContext context) {
-    int cockLen = _cockl.length;
+    int cockLen = cockList.filtered.length;
+    print(cockLen);
     return Scaffold(
       appBar: AppBar(
         title: titleStr,
       ),
-      body: cockLen > 4
+      body: cockLen > 0
           ? StaggeredGridView.countBuilder(
               primary: false,
               crossAxisCount: 4,
               mainAxisSpacing: 4,
               crossAxisSpacing: 4,
               itemBuilder: (context, index) => index < cockLen
-                  ? CockView(index, _cockl.elementAt(index))
+                  ? CockView(index, cockList.filtered.elementAt(index))
                   : Text(''),
               staggeredTileBuilder: (index) => StaggeredTile.fit(
                   MediaQuery.of(context).size.width > 750 ? 1 : 2),
             )
           : Center(child: CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(context).pushNamed(cock_filters),
+        onPressed: () => navigateFilters(),
         label: const Text('Filters'),
         icon: const Icon(Icons.local_bar_outlined),
         backgroundColor: Colors.orangeAccent,
@@ -126,6 +139,7 @@ class _LayoutManagerState extends State<LayoutManager> {
 }
 
 class CockView extends StatelessWidget {
+  /// Displays the cock.
   const CockView(this.index, this.cocktail);
   final Cocktail cocktail;
   final int index;

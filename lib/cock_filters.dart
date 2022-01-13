@@ -1,8 +1,8 @@
-import 'package:cockbotapp/cock.dart';
-import 'package:cockbotapp/routes.dart';
 import 'package:flutter/material.dart';
 
-cockFilterValues cockFiltVals = cockFilterValues();
+import 'cock.dart';
+
+CockFilterValues cockFiltVals = CockFilterValues();
 
 class CockFilters extends StatefulWidget {
   @override
@@ -11,7 +11,7 @@ class CockFilters extends StatefulWidget {
   }
 }
 
-class cockFilterValues {
+class CockFilterValues {
   bool all = false;
   bool noAlchool = false;
   Map categories = {
@@ -101,8 +101,7 @@ class _CockFiltersState extends State<CockFilters> {
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
-          onPressed: () =>
-              {Navigator.of(context).pushReplacementNamed(layout_manager)},
+          onPressed: () => {Navigator.of(context).pop()},
           child: Text(
             "Apply",
             style: const TextStyle(
@@ -194,12 +193,10 @@ class _CockFiltersState extends State<CockFilters> {
   }
 }
 
-List<Cocktail> filterCockList(List<Cocktail> cockL) {
-  List<Cocktail> res = [];
-  for (Cocktail cock in cockL) {
-    if (cock.isToBeDisplayed()) {
-      res.add(cock);
-    }
-  }
-  return res;
-}
+
+// Cocktail getRandomizedCocks() {
+//   Cocktail val;
+//   fetchCockList(['*']).then((list) => () {
+//         val = (list..shuffle()).first;
+//       });
+// }

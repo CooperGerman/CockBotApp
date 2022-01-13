@@ -25,13 +25,13 @@ Future<List<String>> fetchLiquidsList() async {
     cockMach.isOnline = false;
     if (e.response == null) {
       print(cockMach.add + " not reachable");
-    } else if (e.type == "response") {
+    } else if (e.type.toString() == "response") {
       print(cockMach.add + " responded incorrect status");
-    } else if (e.type == "cancel") {
+    } else if (e.type.toString() == "cancel") {
       print(cockMach.add + " cancelled");
-    } else if (e.type == "connectTimeout") {
+    } else if (e.type.toString() == "connectTimeout") {
       print(cockMach.add + " connection timed out");
-    } else if (e.type == "cancel") {
+    } else if (e.type.toString() == "cancel") {
       print(cockMach.add + " cancelled");
     }
     cockMach.liquids = ['*'];

@@ -1,10 +1,7 @@
-// import 'dart:io';
-
-import 'dart:html';
-
 import 'package:cockbotapp/physical.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'cock.dart';
 import 'routes.dart';
 import 'physical.dart';
 
@@ -57,6 +54,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // String titleStr = 'CockBotApp' + (cockMach.isOnline ? '' : " (No Machine Connected)");
+  _HomeState() {
+    fetchLiquidsList().then((val1) => setState(() {
+          fetchCockList(val1);
+        }));
+  }
+
   Text titleStr = Text(
     'CockBotApp' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
     style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
@@ -169,7 +172,7 @@ class HomeTile extends StatelessWidget {
                         foreground: Paint()
                           // ..style = PaintingStyle.stroke
                           ..strokeWidth = 1
-                          ..color = Color(0xFF91521F)),
+                          ..color = Color(0xFFFFEEBE)),
                   ),
                 ),
               ),

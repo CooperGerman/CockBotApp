@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'physical.dart';
 import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:cockbotapp/cock_filters.dart';
 
@@ -19,34 +17,34 @@ class Cocktail {
   List<String> ingredients = [];
   List<String> missing = [];
   List<String> measures = [];
+  bool display = true;
 
   Cocktail({
     required this.name,
     required this.imgLink,
     required this.id,
   });
-
-  bool isToBeDisplayed() {
+  isToBeDisplayed() {
+    this.display = true;
     if (cockFiltVals.noAlchool &
         !(this.isAlchool.contains(RegExp('non', caseSensitive: false)))) {
-      return false;
+      this.display = false;
     }
     if (cockFiltVals.onlyComplete & !this.isComplete) {
-      return false;
+      this.display = false;
     }
     if (cockFiltVals.containsLiquid) {
+      bool tmp = false;
       for (var ing in this.ingredients) {
         if (cockMach.liquids.contains(ing)) {
-          return true;
+          tmp = true;
         }
       }
-      return false;
+      this.display = tmp;
     }
     if (cockFiltVals.categories[this.category] == false) {
-      // print(this.name + '--> ' + this.category + ' Non valid category');
-      return false;
+      this.display = false;
     }
-    return true;
   }
 
   factory Cocktail.fromJson(dynamic drink) {
@@ -58,87 +56,120 @@ class Cocktail {
   }
 }
 
-Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
-  List<Cocktail> cockList = [];
+class CockList {
+  final List<Cocktail> elements = [];
+  List<Cocktail> filtered = [];
+
+  filterDisplayed() {
+    this.filtered.clear();
+    for (var cock in this.elements) {
+      cock.isToBeDisplayed();
+      if (cock.display && !this.isInCockList(this.filtered, cock)) {
+        this.filtered.add(cock);
+      }
+    }
+    print('number of elements : ${(this.elements).length}');
+    print('number of filtered : ${(this.filtered).length}');
+  }
+
+  bool isInCockList(List list, Cocktail val) {
+    for (var cock in list) {
+      if (val.name == cock.name) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+CockList cockList = CockList();
+
+fetchCockList(List<String> ingredients) async {
   Cocktail cock;
-  // if (!ingredients.contains('*')) {
-  //   for (var ingredient in ingredients) {
-  //     String add = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' +
-  //         ingredient;
-  //     try {
-  //       final response = await Dio().get(add).timeout(Duration(seconds: 10));
-  //       // If the server did return a 200 OK response,
-  //       // then parse the JSON.
-  //       // Map decoded = jsonDecode(response.data);
-  //       Map decoded = (response.data);
-  //       if (decoded.keys.isNotEmpty) {
-  //         if (decoded['drinks'].length) {
-  //           for (dynamic drink in decoded['drinks']) {
-  //             cock = Cocktail.fromJson(drink);
-  //             fetchCockDetail(cock, ingredients).then((val) =>
-  //                 isInCockList(val, cockList) ? null : cockList.add(val));
-  //           }
-  //           for (cock in cockList) {
-  //             if (cock.missing.isEmpty) {
-  //               cock.isComplete = true;
-  //             }
-  //           }
-  //         }
-  //       }
-  //     } on DioError catch (e) {
-  //       if (e.response == null) {
-  //         print(add + " not reachable");
-  //       } else if (e.type == "response") {
-  //         print(add + " responded incorrect status");
-  //       } else if (e.type == "cancel") {
-  //         print(add + " cancelled");
-  //       } else if (e.type == "connectTimeout") {
-  //         print(add + " connection timed out");
-  //       } else if (e.type == "cancel") {
-  //         print(add + " cancelled");
-  //       }
-  //     }
-  //   }
-  // } else {
-  int c = "a".codeUnitAt(0);
-  int end = "z".codeUnitAt(0);
-  while (c <= end) {
-    String add = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=' +
-        String.fromCharCode(c);
-    try {
-      final response = await Dio().get(add).timeout(Duration(seconds: 10));
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      Map decoded = response.data;
-      if (decoded.keys.isNotEmpty) {
-        if (decoded.values.first != null) {
-          for (dynamic drink in decoded['drinks']) {
-            cock = Cocktail.fromJson(drink);
-            fetchCockDetail(cock, ingredients).then((val) =>
-                isInCockList(val, cockList) ? null : cockList.add(val));
-          }
-          for (cock in cockList) {
-            if (cock.missing.isEmpty) {
-              cock.isComplete = true;
+  if (!ingredients.contains('*')) {
+    for (var ingredient in ingredients) {
+      String add = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' +
+          ingredient;
+      try {
+        final response = await Dio().get(add).timeout(Duration(seconds: 10));
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        // Map decoded = jsonDecode(response.data);
+        Map decoded = (response.data);
+        if (decoded.keys.isNotEmpty) {
+          if (decoded['drinks'].length) {
+            for (dynamic drink in decoded['drinks']) {
+              cock = Cocktail.fromJson(drink);
+              cock.isToBeDisplayed();
+              fetchCockDetail(cock, ingredients).then((val) =>
+                  cockList.isInCockList(cockList.elements, val)
+                      ? null
+                      : cockList.elements.add(val));
+            }
+            for (cock in cockList.elements) {
+              if (cock.missing.isEmpty) {
+                cock.isComplete = true;
+              }
             }
           }
         }
-      }
-    } on DioError catch (e) {
-      if (e.response == null) {
-        print(add + " not reachable");
-      } else if (e.type == "response") {
-        print(add + " responded incorrect status");
-      } else if (e.type == "cancel") {
-        print(add + " cancelled");
-      } else if (e.type == "connectTimeout") {
-        print(add + " connection timed out");
-      } else if (e.type == "cancel") {
-        print(add + " cancelled");
+      } on DioError catch (e) {
+        if (e.response == null) {
+          print(add + " not reachable");
+        } else if (e.type.toString() == "response") {
+          print(add + " responded incorrect status");
+        } else if (e.type.toString() == "cancel") {
+          print(add + " cancelled");
+        } else if (e.type.toString() == "connectTimeout") {
+          print(add + " connection timed out");
+        } else if (e.type.toString() == "cancel") {
+          print(add + " cancelled");
+        }
       }
     }
-    c++;
-    // }
+  } else {
+    int c = "a".codeUnitAt(0);
+    int end = "z".codeUnitAt(0);
+    while (c <= end) {
+      String add = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=' +
+          String.fromCharCode(c);
+      try {
+        final response = await Dio().get(add).timeout(Duration(seconds: 10));
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        Map decoded = response.data;
+        if (decoded.keys.isNotEmpty) {
+          if (decoded.values.first != null) {
+            for (dynamic drink in decoded['drinks']) {
+              cock = Cocktail.fromJson(drink);
+              cock.isToBeDisplayed();
+              fetchCockDetail(cock, ingredients).then((val) =>
+                  cockList.isInCockList(cockList.elements, val)
+                      ? null
+                      : cockList.elements.add(val));
+            }
+            for (cock in cockList.elements) {
+              if (cock.missing.isEmpty) {
+                cock.isComplete = true;
+              }
+            }
+          }
+        }
+      } on DioError catch (e) {
+        if (e.response == null) {
+          print(add + " not reachable");
+        } else if (e.type.toString() == "response") {
+          print(add + " responded incorrect status");
+        } else if (e.type.toString() == "cancel") {
+          print(add + " cancelled");
+        } else if (e.type.toString() == "connectTimeout") {
+          print(add + " connection timed out");
+        } else if (e.type.toString() == "cancel") {
+          print(add + " cancelled");
+        }
+      }
+      c++;
+    }
 
     // for (var i = 0; i < 10; i++) {
     //   String add = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' +
@@ -154,8 +185,9 @@ Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
     //       if (decoded.values.first != null) {
     //         for (dynamic drink in decoded['drinks']) {
     //           cock = Cocktail.fromJson(drink);
+    //           cock.isToBeDisplayed();
     //           fetchCockDetail(cock, ingredients).then((val) =>
-    //               isInCockList(val, cockList) ? null : cockList.add(val));
+    //               cockList.isInCockList(cockList.elements, val) ? null : cockList.add(val));
     //         }
     //         for (cock in cockList) {
     //           if (cock.missing.isEmpty) {
@@ -179,7 +211,7 @@ Future<List<Cocktail>> fetchCockList(List<String> ingredients) async {
     //   }
     // }
   }
-  return cockList;
+  cockList.filterDisplayed();
 }
 
 Future<Cocktail> fetchCockDetail(
@@ -191,7 +223,7 @@ Future<Cocktail> fetchCockDetail(
     // If the server did return a 200 OK response,
     // then parse the JSON.
     // Map decoded = jsonDecode(response.data);
-    print(add);
+    // print(add);
     Map decoded = (response.data);
     String ing = "";
     // 16 because of hardcoded number of ingredients
@@ -222,24 +254,15 @@ Future<Cocktail> fetchCockDetail(
   } on DioError catch (e) {
     if (e.response == null) {
       print(add + " not reachable");
-    } else if (e.type == "response") {
+    } else if (e.type.toString() == "response") {
       print(add + " responded incorrect status");
-    } else if (e.type == "cancel") {
+    } else if (e.type.toString() == "cancel") {
       print(add + " cancelled");
-    } else if (e.type == "connectTimeout") {
+    } else if (e.type.toString() == "connectTimeout") {
       print(add + " connection timed out");
-    } else if (e.type == "cancel") {
+    } else if (e.type.toString() == "cancel") {
       print(add + " cancelled");
     }
   }
   return cocktail;
-}
-
-bool isInCockList(Cocktail val, List<Cocktail> cockList) {
-  for (Cocktail cock in cockList) {
-    if (val.name == cock.name) {
-      return true;
-    }
-  }
-  return false;
 }
