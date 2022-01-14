@@ -193,10 +193,6 @@ class _CockFiltersState extends State<CockFilters> {
   }
 }
 
-
-// Cocktail getRandomizedCocks() {
-//   Cocktail val;
-//   fetchCockList(['*']).then((list) => () {
-//         val = (list..shuffle()).first;
-//       });
-// }
+Cocktail getRandomizedCocks() {
+  return (cockList.filtered.toList()..shuffle()).first;
+}

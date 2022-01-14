@@ -156,8 +156,8 @@ class HomeTile extends StatelessWidget {
                         foreground: Paint()
                           ..style = PaintingStyle.stroke
                           ..strokeWidth = 2
-                          // ..color = Colors.white),
-                          ..color = Colors.black),
+                          ..color = Color(0xFFFFFFFF)),
+                    // ..color = Colors.black),
                   ),
                 ),
               ),
@@ -172,7 +172,7 @@ class HomeTile extends StatelessWidget {
                         foreground: Paint()
                           // ..style = PaintingStyle.stroke
                           ..strokeWidth = 1
-                          ..color = Color(0xFFFFEEBE)),
+                          ..color = Color(0xA8000000)),
                   ),
                 ),
               ),
