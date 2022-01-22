@@ -59,17 +59,22 @@ class Cocktail {
 class CockList {
   final List<Cocktail> elements = [];
   List<Cocktail> filtered = [];
+  List<Cocktail> search = [];
+
+  applyFilters() {
+    for (var cock in this.elements) {
+      cock.isToBeDisplayed();
+    }
+  }
 
   filterDisplayed() {
     this.filtered.clear();
     for (var cock in this.elements) {
-      cock.isToBeDisplayed();
       if (cock.display && !this.isInCockList(this.filtered, cock)) {
         this.filtered.add(cock);
       }
     }
-    print('number of elements : ${(this.elements).length}');
-    print('number of filtered : ${(this.filtered).length}');
+    return this.filtered;
   }
 
   bool isInCockList(List list, Cocktail val) {
@@ -79,6 +84,21 @@ class CockList {
       }
     }
     return false;
+  }
+
+  findCock(String filter) {
+    if (filter == "") {
+      applyFilters();
+      return this.filtered;
+    }
+    this.search.clear();
+    for (var cock in this.filtered) {
+      if (cock.name.toLowerCase().contains(filter.toLowerCase()) &&
+          !this.isInCockList(this.search, cock)) {
+        this.search.add(cock);
+      }
+    }
+    return this.search;
   }
 }
 

@@ -82,19 +82,35 @@ class LayoutManager extends StatefulWidget {
 }
 
 class _LayoutManagerState extends State<LayoutManager> {
+  List<Cocktail> locCockList = [];
+  TextEditingController _searchTextController = new TextEditingController();
+  String searchString = "";
   @override
   void initState() {
     super.initState();
+    cockList.applyFilters();
+    locCockList = cockList.filterDisplayed();
+    _searchTextController.addListener(() {
+      print(_searchTextController.text);
+      searchString = _searchTextController.text;
+    });
+  }
+
+  void findCock(String filter) {
+    setState(() {
+      locCockList = cockList.findCock(filter);
+    });
   }
 
   void refreshData() {
-    cockList.filterDisplayed();
-    // this.build(context);
+    cockList.applyFilters();
+    setState(() {
+      locCockList = cockList.filterDisplayed();
+    });
   }
 
   FutureOr onGoBack(dynamic value) {
     refreshData();
-    setState(() {});
   }
 
   void navigateFilters() {
@@ -103,18 +119,44 @@ class _LayoutManagerState extends State<LayoutManager> {
     Navigator.push(context, route).then(onGoBack);
   }
 
+  void clearSearch() {
+    _searchTextController.clear();
+    findCock("");
+  }
+
   Text titleStr = Text(
     'Cocktails ' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
     style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
   );
   @override
   Widget build(BuildContext context) {
-    int cockLen = cockList.filtered.length;
-    print(cockLen);
+    int cockLen = locCockList.length;
     return Scaffold(
       appBar: AppBar(
-        title: titleStr,
-      ),
+          // The search area here
+          title: Container(
+        width: double.infinity,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Center(
+          child: TextField(
+            controller: _searchTextController,
+            onChanged: (value) => findCock(value),
+            style: TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search, color: Colors.grey),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear, color: Colors.grey),
+                  onPressed: () => {clearSearch()},
+                ),
+                hintText: "Search...",
+                border: InputBorder.none),
+          ),
+        ),
+      )),
       body: cockLen > 0
           ? StaggeredGridView.countBuilder(
               primary: false,
@@ -122,7 +164,7 @@ class _LayoutManagerState extends State<LayoutManager> {
               mainAxisSpacing: 4,
               crossAxisSpacing: 4,
               itemBuilder: (context, index) => index < cockLen
-                  ? CockView(index, cockList.filtered.elementAt(index))
+                  ? CockView(index, locCockList.elementAt(index))
                   : Text(''),
               staggeredTileBuilder: (index) => StaggeredTile.fit(
                   MediaQuery.of(context).size.width > 750 ? 1 : 2),
