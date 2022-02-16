@@ -218,8 +218,8 @@ class CockView extends StatelessWidget {
       );
     }
 
-    return Tooltip(
-      // message: cocktail.name,
+    return
+
       child: cocktail.isComplete
           ? Card(
               color: Colors.lightGreen.shade300,
@@ -274,7 +274,7 @@ class CockView extends StatelessWidget {
                         ),
                       )
                     ],
-                  ))),
-    );
+                  )))
+    ;
   }
 }
