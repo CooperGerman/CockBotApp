@@ -218,59 +218,63 @@ class CockView extends StatelessWidget {
       );
     }
 
-    return cocktail.isComplete
-        ? Card(
-            color: Colors.lightGreen.shade300,
-            child: InkWell(
-                onLongPress: () => Navigator.of(context)
-                    .pushNamed(detail_viewer, arguments: cocktail),
-                child: Column(
-                  children: <Widget>[
-                    cockImage,
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: <Widget>[
-                          Row(children: [
+    return Tooltip(
+      // message: cocktail.name,
+      child: cocktail.isComplete
+          ? Card(
+              color: Colors.lightGreen.shade300,
+              child: InkWell(
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(detail_viewer, arguments: cocktail),
+                  child: Column(
+                    children: <Widget>[
+                      cockImage,
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: <Widget>[
+                            Row(children: [
+                              Text(
+                                cocktail.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                            ]),
+                            Text(
+                              cocktail.category,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )))
+          : Card(
+              child: InkWell(
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(detail_viewer, arguments: cocktail),
+                  child: Column(
+                    children: <Widget>[
+                      cockImage,
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: <Widget>[
                             Text(
                               cocktail.name,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                          ]),
-                          Text(
-                            cocktail.category,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )))
-        : Card(
-            child: InkWell(
-                onLongPress: () => Navigator.of(context)
-                    .pushNamed(detail_viewer, arguments: cocktail),
-                child: Column(
-                  children: <Widget>[
-                    cockImage,
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            cocktail.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            cocktail.category,
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )));
+                            Text(
+                              cocktail.category,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ))),
+    );
   }
 }
