@@ -61,6 +61,20 @@ class CockList {
   List<Cocktail> filtered = [];
   List<Cocktail> search = [];
 
+  CockList() {
+    Cocktail waterCocktail = Cocktail(
+        name: 'Water',
+        imgLink:
+            'https://i.guim.co.uk/img/media/eda873838f940582d1210dcf51900efad3fa8c9b/0_469_7360_4417/master/7360.jpg?width=1140&quality=85&dpr=1&s=none',
+        id: '0');
+    waterCocktail.ingredients = ['water'];
+    waterCocktail.measures = ['10 cl'];
+
+    this.elements.add(waterCocktail);
+    this.filtered.clear();
+    this.search.clear();
+  }
+
   applyFilters() {
     for (var cock in this.elements) {
       cock.isToBeDisplayed();
@@ -116,8 +130,12 @@ fetchCockList(List<String> ingredients) async {
         // then parse the JSON.
         // Map decoded = jsonDecode(response.data);
         Map decoded = (response.data);
+        // check that response status is 200
+        if (response.statusCode == 200) {
+          print(add + " fetched sucessfully");
+        }
         if (decoded.keys.isNotEmpty) {
-          if (decoded['drinks'].length) {
+          if (decoded['drinks'].length > 0) {
             for (dynamic drink in decoded['drinks']) {
               cock = Cocktail.fromJson(drink);
               cock.isToBeDisplayed();

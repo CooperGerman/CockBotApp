@@ -100,7 +100,7 @@ class _CockFiltersState extends State<CockFilters> {
         // padding: EdgeInsets.symmetric(vertical: 16.0),
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
-          style: ElevatedButton.styleFrom(primary: Colors.orangeAccent),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent),
           onPressed: () => {Navigator.of(context).pop()},
           child: Text(
             "Apply",

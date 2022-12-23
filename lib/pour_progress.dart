@@ -63,6 +63,20 @@ class _PourProgressState extends State<PourProgress>
             'Pouring ${cocktail.name}, please be patient...',
             style: TextStyle(fontSize: 20),
           ),
+          Container(
+            child: FloatingActionButton(
+              onPressed: () {
+                // Send a request to the server to cancel the pouring process
+                // You will need to implement the cancelPouring function to handle the request
+                cancelPouring().then((_) {
+                  setState(() {
+                    finished = true;
+                  });
+                });
+              },
+              child: Text("Cancel"),
+            ),
+          ),
           LinearProgressIndicator(
             value: status,
             semanticsLabel: 'Linear progress indicator',

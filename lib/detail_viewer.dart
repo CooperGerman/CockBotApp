@@ -1,6 +1,5 @@
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/post_cock.dart';
-// import 'package:cockbotapp/post_cock.dart';
 import 'package:cockbotapp/routes.dart';
 import 'layout_manager.dart';
 
@@ -47,41 +46,56 @@ class DetailViewer extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.all(insetval),
         color: Theme.of(context).primaryColor,
-        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        // child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        child: Column(children: [
           Container(
-              alignment: Alignment.centerLeft,
-              width: MediaQuery.of(context).size.width / 3 - insetval,
-              child: Column(children: ingredients)),
+              // alignment: Alignment.centerLeft,
+              width: MediaQuery.of(context).size.width - insetval,
+              child: Card(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: ingredients),
+              ))),
           Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width / 3 - insetval,
-              child: Column(children: [
-                Text(
-                  'Instructions',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+              // alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width - insetval,
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(children: [
+                    Text(
+                      'Instructions',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      cocktail.instructions.toString(),
+                      style: const TextStyle(color: Colors.grey),
+                      softWrap: true,
+                    )
+                  ]),
                 ),
-                Text(
-                  cocktail.instructions.toString(),
-                  style: const TextStyle(color: Colors.grey),
-                  softWrap: true,
-                )
-              ])),
+              )),
           Container(
-            alignment: Alignment.centerRight,
-            width: MediaQuery.of(context).size.width / 3 - insetval,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  'Preferred Glass',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
+            // alignment: Alignment.centerRight,
+            width: MediaQuery.of(context).size.width - insetval,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'Preferred Glass',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,
+                    ),
+                    Text(
+                      cocktail.prefGlass,
+                      style: const TextStyle(color: Colors.grey),
+                    )
+                  ],
                 ),
-                Text(
-                  cocktail.prefGlass,
-                  style: const TextStyle(color: Colors.grey),
-                )
-              ],
+              ),
             ),
           ),
         ]));
@@ -95,7 +109,7 @@ class DetailViewer extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               // primary: Theme.of(context).backgroundColor
-              primary: Colors.orangeAccent),
+              backgroundColor: Colors.orangeAccent),
           // onPressed: () => {postCock(cocktail)},
           onPressed: () => {postNprogress(cocktail, context)},
           child: Text(
@@ -113,18 +127,20 @@ class DetailViewer extends StatelessWidget {
       ),
       body: ListView(children: <Widget>[
         Column(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(4),
-            child: Stack(
-              children: <Widget>[
-                // Center(child: CircularProgressIndicator()),
-                Center(
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: cocktail.imgLink,
-                  ),
-                )
-              ],
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Stack(
+                children: <Widget>[
+                  // Center(child: CircularProgressIndicator()),
+                  Center(
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: cocktail.imgLink,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Padding(

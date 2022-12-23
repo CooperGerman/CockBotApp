@@ -7,7 +7,8 @@
         {
             "name": "CockBotApp",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "release"
         },
         {
             "name": "CockBotApp (profile mode)",
