@@ -36,18 +36,6 @@ Future<List<String>> fetchLiquidsList() async {
     }
     cockMach.liquids = ['*'];
   }
-  // final response = await http.get(Uri.parse(add), headers: {
-  //   "Access-Control-Allow-Origin": "*",
-  //   "Content-type": "text/json"
-  // });
-  // if (response.statusCode == 200) {
-  //   // If the server did return a 200 OK response,
-  //   // then parse the JSON.
-  // } else {
-  //   // If the server did not return a 200 OK response,
-  //   // then throw an exception.
-  //   throw Exception('Failed to load Cocktail list from ' + add);
-  // }
   return cockMach.liquids;
 }
 

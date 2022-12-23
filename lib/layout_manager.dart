@@ -158,17 +158,21 @@ class _LayoutManagerState extends State<LayoutManager> {
         ),
       )),
       body: cockLen > 0
-          ? StaggeredGridView.countBuilder(
-              primary: false,
-              crossAxisCount: 4,
-              mainAxisSpacing: 4,
-              crossAxisSpacing: 4,
-              itemBuilder: (context, index) => index < cockLen
-                  ? CockView(index, locCockList.elementAt(index))
-                  : Text(''),
-              staggeredTileBuilder: (index) => StaggeredTile.fit(
-                  MediaQuery.of(context).size.width > 750 ? 1 : 2),
-            )
+          ? StaggeredGrid.count(crossAxisCount: 4, children: [
+              for (int i = 0; i < cockLen; i++)
+                CockView(i, locCockList.elementAt(i))
+            ])
+          // StaggeredGridView.countBuilder(
+          //   primary: false,
+          //   crossAxisCount: 4,
+          //   mainAxisSpacing: 4,
+          //   crossAxisSpacing: 4,
+          //   itemBuilder: (context, index) => index < cockLen
+          //       ? CockView(index, locCockList.elementAt(index))
+          //       : Text(''),
+          //   staggeredTileBuilder: (index) => StaggeredGridTile.fit(crossAxis
+          //       MediaQuery.of(context).size.width > 750 ? 1 : 2),
+          // )
           : Center(child: CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => navigateFilters(),

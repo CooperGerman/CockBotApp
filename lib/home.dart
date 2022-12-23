@@ -1,9 +1,8 @@
 import 'package:cockbotapp/physical.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'cock.dart';
 import 'routes.dart';
-import 'physical.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 List<Widget> _children = const <Widget>[
   // HomeHeaderTile('Choice', Colors.orange),
@@ -66,15 +65,31 @@ class _HomeState extends State<Home> {
   );
   @override
   Widget build(BuildContext context) {
-    List<StaggeredTile> tiles = <StaggeredTile>[
-      StaggeredTile.count((MediaQuery.of(context).size.width > 750 ? 1 : 2),
-          (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6)),
-      StaggeredTile.count((MediaQuery.of(context).size.width > 750 ? 1 : 2),
-          (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6)),
-      StaggeredTile.count((MediaQuery.of(context).size.width > 750 ? 1 : 2),
-          (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6)),
-      StaggeredTile.count((MediaQuery.of(context).size.width > 750 ? 1 : 2),
-          (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6)),
+    List<StaggeredGridTile> tiles = <StaggeredGridTile>[
+      StaggeredGridTile.count(
+        crossAxisCellCount: (MediaQuery.of(context).size.width > 750 ? 1 : 2),
+        mainAxisCellCount:
+            (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6),
+        child: _children[0],
+      ),
+      StaggeredGridTile.count(
+        crossAxisCellCount: (MediaQuery.of(context).size.width > 750 ? 1 : 2),
+        mainAxisCellCount:
+            (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6),
+        child: _children[1],
+      ),
+      StaggeredGridTile.count(
+        crossAxisCellCount: (MediaQuery.of(context).size.width > 750 ? 1 : 2),
+        mainAxisCellCount:
+            (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6),
+        child: _children[2],
+      ),
+      StaggeredGridTile.count(
+        crossAxisCellCount: (MediaQuery.of(context).size.width > 750 ? 1 : 2),
+        mainAxisCellCount:
+            (MediaQuery.of(context).size.width > 750 ? 0.74 : 1.6),
+        child: _children[3],
+      ),
     ];
     return Scaffold(
         appBar: AppBar(
@@ -83,12 +98,11 @@ class _HomeState extends State<Home> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           // padding: const EdgeInsets.all(5),
-          child: StaggeredGridView.count(
+          child: StaggeredGrid.count(
             crossAxisCount: 2,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
-            staggeredTiles: tiles,
-            children: _children,
+            children: tiles,
           ),
         ));
   }
