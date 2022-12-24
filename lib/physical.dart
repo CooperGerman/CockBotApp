@@ -27,8 +27,6 @@ Future<List<String>> fetchLiquidsList() async {
       print(cockMach.add + " not reachable");
     } else if (e.type.toString() == "response") {
       print(cockMach.add + " responded incorrect status");
-    } else if (e.type.toString() == "cancel") {
-      print(cockMach.add + " cancelled");
     } else if (e.type.toString() == "connectTimeout") {
       print(cockMach.add + " connection timed out");
     } else if (e.type.toString() == "cancel") {
@@ -40,7 +38,7 @@ Future<List<String>> fetchLiquidsList() async {
 }
 
 Future<Map> fetchPouringStatus() async {
-  String add = cockMach.add + "/PouringStatus/";
+  String add = cockMach.add + "PouringStatus/";
   Map decoded = {};
   try {
     final response = await Dio().get(add).timeout(Duration(seconds: 10));
@@ -49,43 +47,37 @@ Future<Map> fetchPouringStatus() async {
   } on DioError catch (e) {
     cockMach.isOnline = false;
     if (e.response == null) {
-      print(cockMach.add + " not reachable");
+      print(add + " not reachable");
     } else if (e.type.toString() == "response") {
-      print(cockMach.add + " responded incorrect status");
-    } else if (e.type.toString() == "cancel") {
-      print(cockMach.add + " cancelled");
+      print(add + " responded incorrect status");
     } else if (e.type.toString() == "connectTimeout") {
-      print(cockMach.add + " connection timed out");
+      print(add + " connection timed out");
     } else if (e.type.toString() == "cancel") {
-      print(cockMach.add + " cancelled");
+      print(add + " cancelled");
     }
     cockMach.liquids = ['*'];
   }
   return decoded;
 }
 
-Future<void> cancelPouring() async {
-  String add = cockMach.add + "/CancelStatus/";
-  // Send a request to the server to cancel the pouring process
+Future<Map> cancelPouring() async {
+  String add = cockMach.add + "CancelPouring/";
+  Map decoded = {};
   try {
-    final response = await Dio().post(add);
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    // check that response status is 200
-    if (response.statusCode == 200) {
-      print("Pouring cancelled successfully");
-    }
+    final response = await Dio().get(add).timeout(Duration(seconds: 10));
+    // cast response.data to an integer
+    decoded = jsonDecode(response.data);
+    print(add + " fetched sucessfully");
   } on DioError catch (e) {
     if (e.response == null) {
-      print("Server not reachable");
+      print(add + " not reachable");
     } else if (e.type.toString() == "response") {
-      print("Server responded incorrect status");
-    } else if (e.type.toString() == "cancel") {
-      print("Request cancelled");
+      print(add + " responded incorrect status");
     } else if (e.type.toString() == "connectTimeout") {
-      print("Connection timed out");
+      print(add + " connection timed out");
     } else if (e.type.toString() == "cancel") {
-      print("Request cancelled");
+      print(add + " cancelled");
     }
   }
+  return decoded;
 }

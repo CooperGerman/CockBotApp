@@ -63,11 +63,11 @@ class CockList {
 
   CockList() {
     Cocktail waterCocktail = Cocktail(
-        name: 'Water',
+        name: 'debug water',
         imgLink:
             'https://i.guim.co.uk/img/media/eda873838f940582d1210dcf51900efad3fa8c9b/0_469_7360_4417/master/7360.jpg?width=1140&quality=85&dpr=1&s=none',
         id: '0');
-    waterCocktail.ingredients = ['water'];
+    waterCocktail.ingredients = ['Water'];
     waterCocktail.measures = ['10 cl'];
 
     this.elements.add(waterCocktail);
@@ -208,46 +208,6 @@ fetchCockList(List<String> ingredients) async {
       }
       c++;
     }
-
-    // for (var i = 0; i < 10; i++) {
-    //   String add = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' +
-    //       i.toString();
-    //   try {
-    //     final response = await Dio().get(add).timeout(Duration(seconds: 10));
-    //     // If the server did return a 200 OK response,
-    //     // then parse the JSON.
-    //     // Map decoded = jsonDecode(response.data);
-    //     print(response);
-    //     Map decoded = response.data;
-    //     if (decoded.keys.isNotEmpty) {
-    //       if (decoded.values.first != null) {
-    //         for (dynamic drink in decoded['drinks']) {
-    //           cock = Cocktail.fromJson(drink);
-    //           cock.isToBeDisplayed();
-    //           fetchCockDetail(cock, ingredients).then((val) =>
-    //               cockList.isInCockList(cockList.elements, val) ? null : cockList.add(val));
-    //         }
-    //         for (cock in cockList) {
-    //           if (cock.missing.isEmpty) {
-    //             cock.isComplete = true;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   } on DioError catch (e) {
-    //     if (e.response == null) {
-    //       print(add + " not reachable");
-    //     } else if (e.type == "response") {
-    //       print(add + " responded incorrect status");
-    //     } else if (e.type == "cancel") {
-    //       print(add + " cancelled");
-    //     } else if (e.type == "connectTimeout") {
-    //       print(add + " connection timed out");
-    //     } else if (e.type == "cancel") {
-    //       print(add + " cancelled");
-    //     }
-    //   }
-    // }
   }
   cockList.filterDisplayed();
 }
