@@ -1,6 +1,5 @@
 import 'package:cockbotapp/physical.dart';
 import 'package:flutter/material.dart';
-import 'cock.dart';
 import 'cockHiveDb.dart';
 import 'routes.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -62,6 +61,7 @@ class _HomeState extends State<Home> {
     'CockBotApp' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
     style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
   );
+
   @override
   Widget build(BuildContext context) {
     CocktailDatabase database = Provider.of<CocktailDatabase>(context);
@@ -111,7 +111,10 @@ class _HomeState extends State<Home> {
                     children: tiles,
                   ));
             } else {
-              return CircularProgressIndicator();
+              return Column(children: [
+                Text('Updating database'),
+                CircularProgressIndicator()
+              ]);
             }
           },
         )));

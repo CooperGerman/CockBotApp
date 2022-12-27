@@ -35,6 +35,7 @@ dependencies:
   sqflite: ^2.2.2
   hive: ^2.2.3
   provider: ^6.0.5
+  hive_flutter: ^1.1.0
   # device_info_plus: ^3.0.1
   # carousel_slider: ^4.0.0
   # web_scraper: ^0.1.4

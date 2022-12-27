@@ -1,9 +1,11 @@
-import 'package:hive/hive.dart';
 import 'cock.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class CocktailDatabase {
   CockList _cockList = CockList();
-  final box = Hive.box<Cocktail>('cocktails');
+  Box<Cocktail> box;
+  CocktailDatabase({required this.box});
 
   Future<void> addCocktail(Cocktail cocktail) async {
     final index = box.add(cocktail);
@@ -21,13 +23,14 @@ class CocktailDatabase {
   // Stream<List<Cocktail>> get cocktails => box.watch();
 
   Future<void> fetchDB() async {
+    print('Fetching DB');
     _cockList = await fetchCockList(['*'], _cockList);
     // Iterate over all the cocktails in the CockList
     for (var cocktail in _cockList.elements) {
       // Check if the cocktail is already present in the box
       if (!box.containsKey(cocktail.id)) {
         // If the cocktail is not present, add it to the box
-        box.add(cocktail);
+        addCocktail(cocktail);
       }
     }
   }

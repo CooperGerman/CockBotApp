@@ -29,7 +29,7 @@ class _RandomCockState extends State<RandomCock> {
         color: Color(0xFF000000),
         child: InkWell(
             onTap: () => Navigator.of(context).pushNamed(detail_viewer,
-                arguments: database.selectRandomCocktail(['*'])),
+                arguments: database.selectRandomCocktail()),
             child: Stack(
               fit: StackFit.expand,
               children: [
