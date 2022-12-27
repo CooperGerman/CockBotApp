@@ -100,10 +100,12 @@ class _PourProgressState extends State<PourProgress>
       displayed = Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text(
-            'Pouring ${cocktail.name}, please be patient...',
-            style: TextStyle(fontSize: 20),
-          ),
+          (status == 1)
+              ? returnButton
+              : Text(
+                  'Pouring ${cocktail.name}, please be patient...',
+                  style: TextStyle(fontSize: 20),
+                ),
           cancelButton,
           LinearProgressIndicator(
             value: status,

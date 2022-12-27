@@ -3,6 +3,9 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:cockbotapp/cock.dart';
 import 'package:cockbotapp/physical.dart';
+import 'cockHiveDb.dart';
+import 'package:provider/provider.dart';
+
 import 'cock_filters.dart';
 import 'routes.dart';
 
@@ -88,30 +91,14 @@ class _LayoutManagerState extends State<LayoutManager> {
   @override
   void initState() {
     super.initState();
-    cockList.applyFilters();
-    locCockList = cockList.filterDisplayed();
+    // locCockList = cockList.filterDisplayed();
     _searchTextController.addListener(() {
       print(_searchTextController.text);
       searchString = _searchTextController.text;
     });
   }
 
-  void findCock(String filter) {
-    setState(() {
-      locCockList = cockList.findCock(filter);
-    });
-  }
-
-  void refreshData() {
-    cockList.applyFilters();
-    setState(() {
-      locCockList = cockList.filterDisplayed();
-    });
-  }
-
-  FutureOr onGoBack(dynamic value) {
-    refreshData();
-  }
+  FutureOr onGoBack(dynamic value) {}
 
   void navigateFilters() {
     // Navigator.of(context).pushNamed(cock_filters).then(onGoBack);
@@ -121,7 +108,6 @@ class _LayoutManagerState extends State<LayoutManager> {
 
   void clearSearch() {
     _searchTextController.clear();
-    findCock("");
   }
 
   Text titleStr = Text(
@@ -130,6 +116,7 @@ class _LayoutManagerState extends State<LayoutManager> {
   );
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<CocktailDatabase>(context);
     int cockLen = locCockList.length;
     return Scaffold(
       appBar: AppBar(
@@ -144,7 +131,7 @@ class _LayoutManagerState extends State<LayoutManager> {
         child: Center(
           child: TextField(
             controller: _searchTextController,
-            onChanged: (value) => findCock(value),
+            onChanged: (value) => database.filterCocktails(value),
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: Colors.grey),
@@ -192,7 +179,7 @@ class CockView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget cockImage;
-    if (cocktail.isAlchool.contains(RegExp('non', caseSensitive: false))) {
+    if (cocktail.isAlcohol.contains(RegExp('non', caseSensitive: false))) {
       cockImage = Stack(
         children: <Widget>[
           Center(

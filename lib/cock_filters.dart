@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'cock.dart';
+// import CockFilter(),
 
 CockFilterValues cockFiltVals = CockFilterValues();
 
@@ -13,7 +12,7 @@ class CockFilters extends StatefulWidget {
 
 class CockFilterValues {
   bool all = false;
-  bool noAlchool = false;
+  bool noAlcohol = false;
   Map categories = {
     "Ordinary Drink": false,
     "Cocktail": false,
@@ -119,15 +118,15 @@ class _CockFiltersState extends State<CockFilters> {
               Checkbox(
                   checkColor: Colors.white,
                   fillColor: MaterialStateProperty.resolveWith(getColor),
-                  value: cockFiltVals.noAlchool,
+                  value: cockFiltVals.noAlcohol,
                   onChanged: (bool? value) {
                     setState(() {
-                      cockFiltVals.noAlchool = value!;
+                      cockFiltVals.noAlcohol = value!;
                     });
                   }),
               Flexible(
                   child: Row(children: [
-                Text('Show only Alchool free drinks '),
+                Text('Show only Alcohol free drinks '),
                 Text(
                   '(Caution using this option might cause sobriety)',
                   style: TextStyle(
@@ -191,8 +190,4 @@ class _CockFiltersState extends State<CockFilters> {
       bottomNavigationBar: readButton,
     );
   }
-}
-
-Cocktail getRandomizedCocks() {
-  return (cockList.filtered.toList()..shuffle()).first;
 }

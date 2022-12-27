@@ -1,8 +1,10 @@
 import 'package:cockbotapp/physical.dart';
 import 'package:flutter/material.dart';
 import 'cock.dart';
+import 'cockHiveDb.dart';
 import 'routes.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
 List<Widget> _children = const <Widget>[
   // HomeHeaderTile('Choice', Colors.orange),
@@ -45,6 +47,7 @@ List<Widget> _children = const <Widget>[
 ];
 
 class Home extends StatefulWidget {
+  Home();
   @override
   _HomeState createState() {
     return _HomeState();
@@ -53,11 +56,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // String titleStr = 'CockBotApp' + (cockMach.isOnline ? '' : " (No Machine Connected)");
-  _HomeState() {
-    fetchLiquidsList().then((val1) => setState(() {
-          fetchCockList(val1);
-        }));
-  }
+  _HomeState();
 
   Text titleStr = Text(
     'CockBotApp' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
@@ -65,6 +64,7 @@ class _HomeState extends State<Home> {
   );
   @override
   Widget build(BuildContext context) {
+    CocktailDatabase database = Provider.of<CocktailDatabase>(context);
     List<StaggeredGridTile> tiles = <StaggeredGridTile>[
       StaggeredGridTile.count(
         crossAxisCellCount: (MediaQuery.of(context).size.width > 750 ? 1 : 2),
@@ -95,16 +95,26 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: titleStr,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          // padding: const EdgeInsets.all(5),
-          child: StaggeredGrid.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            children: tiles,
-          ),
-        ));
+        body: Center(
+            child: FutureBuilder(
+          future: database.fetchDB(),
+          // database.fetchDB(cockList);,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  // padding: const EdgeInsets.all(5),
+                  child: StaggeredGrid.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    children: tiles,
+                  ));
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        )));
   }
 }
 

@@ -25,7 +25,7 @@ Future<http.Response> postCock(Cocktail cock) {
         'imgLink': cock.imgLink,
         'id': cock.id,
         'tag': cock.tag,
-        'isAlchool': cock.isAlchool,
+        'isAlcohol': cock.isAlcohol,
         'prefGlass': cock.prefGlass,
         'instructions': cock.instructions,
         'ingredients': cock.ingredients,

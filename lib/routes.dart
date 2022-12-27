@@ -1,4 +1,6 @@
+import 'package:cockbotapp/cockHiveDb.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'layout_manager.dart';
 import 'detail_viewer.dart';

@@ -3,13 +3,14 @@ import 'physical.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart';
 import 'package:cockbotapp/cock_filters.dart';
+import 'package:hive/hive.dart';
 
-class Cocktail {
+class Cocktail extends HiveObject {
   final String name;
   final String imgLink;
   final String id;
   bool isComplete = false;
-  String isAlchool = '';
+  String isAlcohol = '';
   String tag = Uuid().v4();
   String prefGlass = '';
   String category = '';
@@ -26,8 +27,8 @@ class Cocktail {
   });
   isToBeDisplayed() {
     this.display = true;
-    if (cockFiltVals.noAlchool &
-        !(this.isAlchool.contains(RegExp('non', caseSensitive: false)))) {
+    if (cockFiltVals.noAlcohol &
+        !(this.isAlcohol.contains(RegExp('non', caseSensitive: false)))) {
       this.display = false;
     }
     if (cockFiltVals.onlyComplete & !this.isComplete) {
@@ -45,6 +46,42 @@ class Cocktail {
     if (cockFiltVals.categories[this.category] == false) {
       this.display = false;
     }
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'imgLink': imgLink,
+      'id': id,
+      'isComplete': isComplete,
+      'isAlcohol': isAlcohol,
+      'tag': tag,
+      'prefGlass': prefGlass,
+      'category': category,
+      'instructions': instructions,
+      'ingredients': ingredients,
+      'missing': missing,
+      'measures': measures,
+      'display': display,
+    };
+  }
+
+  factory Cocktail.fromMap(Map<String, dynamic> map) {
+    Cocktail cock =
+        Cocktail(name: map['name'], imgLink: map['imgLink'], id: map['id']);
+
+    cock.isComplete = map['isComplete'];
+    cock.isAlcohol = map['isAlcohol'];
+    cock.tag = map['tag'];
+    cock.prefGlass = map['prefGlass'];
+    cock.category = map['category'];
+    cock.instructions = map['instructions'];
+    cock.ingredients = List<String>.from(map['ingredients']);
+    cock.missing = List<String>.from(map['missing']);
+    cock.measures = List<String>.from(map['measures']);
+    cock.display = map['display'];
+
+    return cock;
   }
 
   factory Cocktail.fromJson(dynamic drink) {
@@ -116,9 +153,7 @@ class CockList {
   }
 }
 
-CockList cockList = CockList();
-
-fetchCockList(List<String> ingredients) async {
+fetchCockList(List<String> ingredients, CockList cockList) async {
   Cocktail cock;
   if (!ingredients.contains('*')) {
     for (var ingredient in ingredients) {
@@ -225,7 +260,7 @@ Future<Cocktail> fetchCockDetail(
     Map decoded = (response.data);
     String ing = "";
     // 16 because of hardcoded number of ingredients
-    cocktail.isAlchool = decoded['drinks'][0]['strAlcoholic'];
+    cocktail.isAlcohol = decoded['drinks'][0]['strAlcoholic'];
     cocktail.prefGlass = decoded['drinks'][0]['strGlass'];
     cocktail.category = decoded['drinks'][0]['strCategory'];
     cocktail.instructions = decoded['drinks'][0]['strInstructions'];

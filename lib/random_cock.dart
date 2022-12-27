@@ -4,6 +4,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'cock_filters.dart';
 import 'routes.dart';
+import 'cockHiveDb.dart';
+import 'package:provider/provider.dart';
 
 class RandomCock extends StatefulWidget {
   @override
@@ -21,12 +23,13 @@ class _RandomCockState extends State<RandomCock> {
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<CocktailDatabase>(context);
     List<Widget> _children = [
       Card(
         color: Color(0xFF000000),
         child: InkWell(
-            onTap: () => Navigator.of(context)
-                .pushNamed(detail_viewer, arguments: getRandomizedCocks()),
+            onTap: () => Navigator.of(context).pushNamed(detail_viewer,
+                arguments: database.selectRandomCocktail(['*'])),
             child: Stack(
               fit: StackFit.expand,
               children: [
