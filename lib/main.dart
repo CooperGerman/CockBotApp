@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'routes.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+import 'firebase_options.dart';
+
+void main() async {
+  // Initialize Firebase
+  await Firebase.initializeApp(name: "CockBotApp",
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

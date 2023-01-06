@@ -131,9 +131,7 @@ fetchCockList(List<String> ingredients) async {
         // Map decoded = jsonDecode(response.data);
         Map decoded = (response.data);
         // check that response status is 200
-        if (response.statusCode == 200) {
-          print(add + " fetched sucessfully");
-        }
+        print(add + " fetched sucessfully");
         if (decoded.keys.isNotEmpty) {
           if (decoded['drinks'].length > 0) {
             for (dynamic drink in decoded['drinks']) {
@@ -175,6 +173,7 @@ fetchCockList(List<String> ingredients) async {
         final response = await Dio().get(add).timeout(Duration(seconds: 10));
         // If the server did return a 200 OK response,
         // then parse the JSON.
+        print(add + " fetched sucessfully");
         Map decoded = response.data;
         if (decoded.keys.isNotEmpty) {
           if (decoded.values.first != null) {

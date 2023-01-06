@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "656021822180",
+    "project_id": "cockbotappdb",
+    "storage_bucket": "cockbotappdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656021822180:android:dba7283e311410fab46af1",
+        "android_client_info": {
+          "package_name": "com.example.cockbot_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656021822180-ps0s6nu43kt5jnrsi8nuqvjkb6mf2khq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ_9pgToodE6s2Hbjij90haVho3YsRyZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656021822180-ps0s6nu43kt5jnrsi8nuqvjkb6mf2khq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

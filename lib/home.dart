@@ -1,8 +1,11 @@
 import 'package:cockbotapp/physical.dart';
+import 'package:firebase/firebase.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'cock.dart';
 import 'routes.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 List<Widget> _children = const <Widget>[
   // HomeHeaderTile('Choice', Colors.orange),
@@ -53,11 +56,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // String titleStr = 'CockBotApp' + (cockMach.isOnline ? '' : " (No Machine Connected)");
-  _HomeState() {
-    fetchLiquidsList().then((val1) => setState(() {
-          fetchCockList(val1);
-        }));
-  }
+  // _HomeState() {
+  //   // Wait for fetchLiquidList to complete
+  //   fetchLiquidsList().then((val1) => (() {
+  //         fetchCockList(val1);
+  //       }));
+  // }
 
   Text titleStr = Text(
     'CockBotApp' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
@@ -95,16 +99,23 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: titleStr,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          // padding: const EdgeInsets.all(5),
-          child: StaggeredGrid.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            children: tiles,
-          ),
-        ));
+        body: FutureBuilder(
+            future: updateDB(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    // padding: const EdgeInsets.all(5),
+                    child: StaggeredGrid.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      children: tiles,
+                    ));
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }));
   }
 }
 
@@ -193,5 +204,46 @@ class HomeTile extends StatelessWidget {
             ],
           )),
     );
+  }
+}
+
+Future<void> updateDB() async {
+  // Initialize Firebase
+  // FirebaseDatabase _database = FirebaseDatabase.instance;
+  FirebaseApp secondaryApp = Firebase.app('CockBotApp');
+  FirebaseDatabase _database = FirebaseDatabase.instanceFor(
+      app: secondaryApp,
+      databaseURL:
+          'https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app/');
+
+  // Wait for fetchLiquidList to complete
+  await fetchLiquidsList().then((val1) async {
+    await fetchCockList(val1);
+  });
+
+  // Loop through the list and add each Cocktail object to the Firebase database
+  for (var cocktail in cockList.elements) {
+    // Check if the cocktail already exists in the database
+    var snapshot = await _database
+        .ref('cocktails')
+        .orderByChild('name')
+        .equalTo(cocktail.name)
+        .once(DatabaseEventType.value);
+    if (snapshot.snapshot.value == null) {
+      // Cocktail does not exist, add it to the database
+      await _database.ref('cocktails').push().set({
+        'name': cocktail.name,
+        'ingredients': cocktail.ingredients,
+      }).then((_) {
+        // Data saved successfully!
+        print('Pushed ' + cocktail.name + ' sucessfully');
+      }).catchError((error) {
+        // The write failed...
+        print(cocktail.name + ' push failed');
+      });
+    } else {
+      // Cocktail already exists, skip adding it
+      print(cocktail.name + ' already exists, skipping');
+    }
   }
 }
