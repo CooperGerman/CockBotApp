@@ -6,7 +6,7 @@ import 'firebase_options.dart';
 
 void main() async {
   // Initialize Firebase
-  await Firebase.initializeApp(name: "CockBotApp",
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

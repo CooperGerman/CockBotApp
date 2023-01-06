@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "656021822180",
+    "firebase_url": "https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "cockbotappdb",
     "storage_bucket": "cockbotappdb.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "656021822180-ps0s6nu43kt5jnrsi8nuqvjkb6mf2khq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "656021822180-kleedsccgevaq2p6f5hmum24msqtr84i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.CockBotApp"
+              }
             }
           ]
         }

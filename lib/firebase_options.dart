@@ -52,6 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '656021822180',
     projectId: 'cockbotappdb',
     authDomain: 'cockbotappdb.firebaseapp.com',
+    databaseURL: 'https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'cockbotappdb.appspot.com',
     measurementId: 'G-NH0KCN92D9',
   );
@@ -61,6 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:656021822180:android:dba7283e311410fab46af1',
     messagingSenderId: '656021822180',
     projectId: 'cockbotappdb',
+    databaseURL: 'https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'cockbotappdb.appspot.com',
   );
 
@@ -69,6 +71,7 @@ class DefaultFirebaseOptions {
     appId: '1:656021822180:ios:12597cd5b8dc3abbb46af1',
     messagingSenderId: '656021822180',
     projectId: 'cockbotappdb',
+    databaseURL: 'https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'cockbotappdb.appspot.com',
     iosClientId: '656021822180-kleedsccgevaq2p6f5hmum24msqtr84i.apps.googleusercontent.com',
     iosBundleId: 'com.example.CockBotApp',

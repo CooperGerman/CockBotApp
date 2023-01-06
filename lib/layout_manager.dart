@@ -192,7 +192,7 @@ class CockView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget cockImage;
-    if (cocktail.isAlchool.contains(RegExp('non', caseSensitive: false))) {
+    if (cocktail.isAlcohol.contains(RegExp('non', caseSensitive: false))) {
       cockImage = Stack(
         children: <Widget>[
           Center(

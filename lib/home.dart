@@ -209,12 +209,12 @@ class HomeTile extends StatelessWidget {
 
 Future<void> updateDB() async {
   // Initialize Firebase
-  // FirebaseDatabase _database = FirebaseDatabase.instance;
-  FirebaseApp secondaryApp = Firebase.app('CockBotApp');
-  FirebaseDatabase _database = FirebaseDatabase.instanceFor(
-      app: secondaryApp,
-      databaseURL:
-          'https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app/');
+  FirebaseDatabase _database = FirebaseDatabase.instance;
+  // FirebaseApp secondaryApp = Firebase.app('CockBotApp');
+  // FirebaseDatabase _database = FirebaseDatabase.instanceFor(
+  //     app: secondaryApp,
+  //     databaseURL:
+  //         'https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app/');
 
   // Wait for fetchLiquidList to complete
   await fetchLiquidsList().then((val1) async {
@@ -228,22 +228,43 @@ Future<void> updateDB() async {
         .ref('cocktails')
         .orderByChild('name')
         .equalTo(cocktail.name)
-        .once(DatabaseEventType.value);
+        .once(DatabaseEventType.value)
+        .timeout(Duration(seconds: 5));
     if (snapshot.snapshot.value == null) {
       // Cocktail does not exist, add it to the database
-      await _database.ref('cocktails').push().set({
-        'name': cocktail.name,
-        'ingredients': cocktail.ingredients,
-      }).then((_) {
-        // Data saved successfully!
-        print('Pushed ' + cocktail.name + ' sucessfully');
-      }).catchError((error) {
-        // The write failed...
-        print(cocktail.name + ' push failed');
-      });
+      await _database
+          .ref('cocktails')
+          .push()
+          .set(cocktail.toMap())
+          .then((_) {
+            // Data saved successfully!
+            print('Pushed ' + cocktail.name + ' sucessfully');
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((error) {
+            // The write failed...
+            print(cocktail.name + ' push failed');
+          });
     } else {
-      // Cocktail already exists, skip adding it
-      print(cocktail.name + ' already exists, skipping');
+      // compare local and remote cocktail objects
+      // if they are different, update the remote cocktail object
+      // else do nothing
+      var __cocktail =
+          Map<String, dynamic>.from(snapshot.snapshot.value as Map);
+      for (var key in __cocktail.keys) {
+        if (cocktail.toMap().containsKey(key) &&
+            cocktail.toMap()[key] != __cocktail[key]) {
+          print('Updating field ' + cocktail.name);
+          await _database.ref('cocktails').child(key).update(cocktail.toMap());
+        } else {
+          // Cocktail already exists, skip adding it
+          print('Field ' +
+              key +
+              'of' +
+              cocktail.name +
+              ' is unchanged, skipping');
+        }
+      }
     }
   }
 }
