@@ -39,18 +39,20 @@ class _UpdatingState extends State<Updating> {
                 ));
               } else {
                 // updateDB is still running
-                return Column(children: [
-                  Center(
-                      child: Text(
-                    "Updating cocktail database... ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        foreground: Paint()
-                          ..strokeWidth = 1
-                          ..color = Colors.lightBlueAccent),
-                  )),
-                  Center(child: CircularProgressIndicator())
-                ]);
+                return Center(
+                  child: Column(children: [
+                    Text(
+                      "Updating cocktail database... ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20,
+                          foreground: Paint()
+                            ..strokeWidth = 1
+                            ..color = Colors.lightBlueAccent),
+                    ),
+                    Center(child: CircularProgressIndicator())
+                  ]),
+                );
               }
             }));
   }
