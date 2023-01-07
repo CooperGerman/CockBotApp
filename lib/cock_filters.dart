@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'cock.dart';
-
 CockFilterValues cockFiltVals = CockFilterValues();
 
 class CockFilters extends StatefulWidget {
@@ -193,6 +191,6 @@ class _CockFiltersState extends State<CockFilters> {
   }
 }
 
-Cocktail getRandomizedCocks() {
-  return (cockList.filtered.toList()..shuffle()).first;
-}
+// Cocktail getRandomizedCocks() {
+//   return (cockDB.filtered.toList()..shuffle()).first;
+// }

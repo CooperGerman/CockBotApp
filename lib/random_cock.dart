@@ -25,49 +25,49 @@ class _RandomCockState extends State<RandomCock> {
       Card(
         color: Color(0xFF000000),
         child: InkWell(
-            onTap: () => Navigator.of(context)
-                .pushNamed(detail_viewer, arguments: getRandomizedCocks()),
+            // onTap: () => Navigator.of(context)
+            //     .pushNamed(detail_viewer, arguments: getRandomizedCocks()),
             child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Center(
-                    child: Image(
-                        alignment: Alignment.center,
-                        fit: BoxFit.fitHeight,
-                        image: AssetImage('ressources/pngegg.png'))),
-                FittedBox(
-                  fit: BoxFit.contain,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      "Randomly fetched cocktail",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 2
-                            ..color = Color(0xFFFFFFFF)),
-                      // ..color = Colors.black),
-                    ),
-                  ),
+          fit: StackFit.expand,
+          children: [
+            Center(
+                child: Image(
+                    alignment: Alignment.center,
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage('ressources/pngegg.png'))),
+            FittedBox(
+              fit: BoxFit.contain,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  "Randomly fetched cocktail",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 2
+                        ..color = Color(0xFFFFFFFF)),
+                  // ..color = Colors.black),
                 ),
-                FittedBox(
-                  fit: BoxFit.contain,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      "Randomly fetched cocktail",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          foreground: Paint()
-                            // ..style = PaintingStyle.stroke
-                            ..strokeWidth = 1
-                            ..color = Color(0xA8000000)),
-                    ),
-                  ),
+              ),
+            ),
+            FittedBox(
+              fit: BoxFit.contain,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  "Randomly fetched cocktail",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      foreground: Paint()
+                        // ..style = PaintingStyle.stroke
+                        ..strokeWidth = 1
+                        ..color = Color(0xA8000000)),
                 ),
-              ],
-            )),
+              ),
+            ),
+          ],
+        )),
       ),
       Card(
         color: Color(0xFF000000),

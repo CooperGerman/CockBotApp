@@ -1,4 +1,5 @@
 import 'physical.dart';
+import 'database.dart';
 
 import 'package:flutter/material.dart';
 
@@ -10,12 +11,6 @@ class LiquidViewer extends StatefulWidget {
 }
 
 class _LiquidViewerState extends State<LiquidViewer> {
-  List<String> liquids = [];
-  _LiquidViewerState() {
-    fetchLiquidsList().then((val) => setState(() {
-          liquids = val;
-        }));
-  }
   final double insetval = 10.0;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +24,7 @@ class _LiquidViewerState extends State<LiquidViewer> {
         textAlign: TextAlign.start,
       ),
     ];
-    for (String liq in liquids) {
+    for (String liq in liqList) {
       liqlist.add(Text(
         liq,
         textAlign: TextAlign.start,

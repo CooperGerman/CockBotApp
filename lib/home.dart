@@ -1,11 +1,8 @@
 import 'package:cockbotapp/physical.dart';
-import 'package:firebase/firebase.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'cock.dart';
 import 'routes.dart';
+import 'database.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 List<Widget> _children = const <Widget>[
   // HomeHeaderTile('Choice', Colors.orange),
@@ -55,14 +52,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // String titleStr = 'CockBotApp' + (cockMach.isOnline ? '' : " (No Machine Connected)");
-  // _HomeState() {
-  //   // Wait for fetchLiquidList to complete
-  //   fetchLiquidsList().then((val1) => (() {
-  //         fetchCockList(val1);
-  //       }));
-  // }
-
   Text titleStr = Text(
     'CockBotApp' + (cockMach.isOnline ? '' : ' (No Machine Connected)'),
     style: TextStyle(color: cockMach.isOnline ? Colors.white : Colors.red),
@@ -98,9 +87,19 @@ class _HomeState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           title: titleStr,
+          actions: <Widget>[
+            // Settings button
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                // Navigate to a settings view
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
+          ],
         ),
         body: FutureBuilder(
-            future: updateDB(),
+            future: initDB(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Padding(
@@ -204,67 +203,5 @@ class HomeTile extends StatelessWidget {
             ],
           )),
     );
-  }
-}
-
-Future<void> updateDB() async {
-  // Initialize Firebase
-  FirebaseDatabase _database = FirebaseDatabase.instance;
-  // FirebaseApp secondaryApp = Firebase.app('CockBotApp');
-  // FirebaseDatabase _database = FirebaseDatabase.instanceFor(
-  //     app: secondaryApp,
-  //     databaseURL:
-  //         'https://cockbotappdb-default-rtdb.europe-west1.firebasedatabase.app/');
-
-  // Wait for fetchLiquidList to complete
-  await fetchLiquidsList().then((val1) async {
-    await fetchCockList(val1);
-  });
-
-  // Loop through the list and add each Cocktail object to the Firebase database
-  for (var cocktail in cockList.elements) {
-    // Check if the cocktail already exists in the database
-    var snapshot = await _database
-        .ref('cocktails')
-        .orderByChild('name')
-        .equalTo(cocktail.name)
-        .once(DatabaseEventType.value)
-        .timeout(Duration(seconds: 5));
-    if (snapshot.snapshot.value == null) {
-      // Cocktail does not exist, add it to the database
-      await _database
-          .ref('cocktails')
-          .push()
-          .set(cocktail.toMap())
-          .then((_) {
-            // Data saved successfully!
-            print('Pushed ' + cocktail.name + ' sucessfully');
-          })
-          .timeout(Duration(seconds: 5))
-          .catchError((error) {
-            // The write failed...
-            print(cocktail.name + ' push failed');
-          });
-    } else {
-      // compare local and remote cocktail objects
-      // if they are different, update the remote cocktail object
-      // else do nothing
-      var __cocktail =
-          Map<String, dynamic>.from(snapshot.snapshot.value as Map);
-      for (var key in __cocktail.keys) {
-        if (cocktail.toMap().containsKey(key) &&
-            cocktail.toMap()[key] != __cocktail[key]) {
-          print('Updating field ' + cocktail.name);
-          await _database.ref('cocktails').child(key).update(cocktail.toMap());
-        } else {
-          // Cocktail already exists, skip adding it
-          print('Field ' +
-              key +
-              'of' +
-              cocktail.name +
-              ' is unchanged, skipping');
-        }
-      }
-    }
   }
 }

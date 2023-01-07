@@ -68,18 +68,38 @@ class Cocktail {
   factory Cocktail.fromMap(Map<String, dynamic> map) {
     Cocktail cock =
         Cocktail(name: map['name'], imgLink: map['imgLink'], id: map['id']);
-
-    cock.isComplete = map['isComplete'];
-    cock.isAlcohol = map['isAlcohol'];
-    cock.tag = map['tag'];
-    cock.prefGlass = map['prefGlass'];
-    cock.category = map['category'];
-    cock.instructions = map['instructions'];
-    cock.ingredients = List<String>.from(map['ingredients']);
-    cock.missing = List<String>.from(map['missing']);
-    cock.measures = List<String>.from(map['measures']);
-    cock.display = map['display'];
-
+    if (map.isNotEmpty) {
+      map.containsKey('isComplete')
+          ? cock.isComplete = map['isComplete']
+          : cock.isComplete = cock.isComplete;
+      map.containsKey('isAlcohol')
+          ? cock.isAlcohol = map['isAlcohol']
+          : cock.isAlcohol = cock.isAlcohol;
+      map.containsKey('tag') ? cock.tag = map['tag'] : cock.tag = cock.tag;
+      map.containsKey('prefGlass')
+          ? cock.prefGlass = map['prefGlass']
+          : cock.prefGlass = cock.prefGlass;
+      map.containsKey('category')
+          ? cock.category = map['category']
+          : cock.category = cock.category;
+      map.containsKey('instructions')
+          ? cock.instructions = map['instructions']
+          : cock.instructions = cock.instructions;
+      map.containsKey('ingredients')
+          ? cock.ingredients = List<String>.from(map['ingredients'])
+          : cock.ingredients = cock.ingredients;
+      map.containsKey('missing')
+          ? cock.missing = List<String>.from(map['missing'])
+          : cock.missing = cock.missing;
+      map.containsKey('measures')
+          ? cock.measures = List<String>.from(map['measures'])
+          : cock.measures = cock.measures;
+      map.containsKey('display')
+          ? cock.display = map['display']
+          : cock.display = cock.display;
+    } else {
+      Exception('Map empty');
+    }
     return cock;
   }
 
@@ -152,9 +172,8 @@ class CockList {
   }
 }
 
-CockList cockList = CockList();
-
-fetchCockList(List<String> ingredients) async {
+Future<CockList> fetchCockList(List<String> ingredients) async {
+  CockList cockList = CockList();
   Cocktail cock;
   if (!ingredients.contains('*')) {
     for (var ingredient in ingredients) {
@@ -245,6 +264,7 @@ fetchCockList(List<String> ingredients) async {
     }
   }
   cockList.filterDisplayed();
+  return cockList;
 }
 
 Future<Cocktail> fetchCockDetail(
