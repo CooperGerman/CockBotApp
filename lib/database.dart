@@ -58,23 +58,37 @@ Future<void> updateDB() async {
             print(cocktail.name + ' push failed');
           });
     } else {
-      // compare local and remote cocktail objects
-      // if they are different, update the remote cocktail object
-      // else do nothing
-      var __cocktail =
-          Map<String, dynamic>.from(snapshot.snapshot.value as Map);
-      for (var key in __cocktail.keys) {
-        if (cocktail.toMap().containsKey(key) &&
-            cocktail.toMap()[key] != __cocktail[key]) {
-          // print('Updating field ' + cocktail.name);
-          await _database.ref('cocktails').child(key).update(cocktail.toMap());
-        } else {
-          // Cocktail already exists, skip adding it
-          // print('Field ' +
-          // key +
-          // 'of' +
-          // cocktail.name +
-          // ' is unchanged, skipping');
+      // get the key of current snapshot in string format
+      String key = Map<String, dynamic>.from(snapshot.snapshot.value as Map)
+          .keys
+          .first
+          .toString();
+      var __cocktailsnap = await _database
+          .ref('cocktails/' + key)
+          .once(DatabaseEventType.value)
+          .timeout(Duration(seconds: 5));
+      // convert to cocktail object and compare to current cocktail interator
+      Map<String, dynamic> __cocktail =
+          Map<String, dynamic>.from(__cocktailsnap.snapshot.value as Map);
+      for (var entry in __cocktail.entries) {
+        if (__cocktail[entry.key] != cocktail.toMap()[entry.key]) {
+          // update the database
+          var field = 'cocktails/' + key + '/' + entry.key;
+          try {
+            await _database
+                .ref(field)
+                .update({entry.key: cocktail.toMap()[entry.key]}).timeout(
+                    Duration(seconds: 5));
+            print('Updated field ' +
+                entry.key +
+                ' of ' +
+                cocktail.name +
+                ' with value ' +
+                cocktail.toMap()[entry.key].toString() +
+                ' sucessfully');
+          } catch (error) {
+            print(cocktail.name + ' update failed');
+          }
         }
       }
     }
