@@ -9,7 +9,7 @@ class Cocktail {
   final String imgLink;
   final String id;
   bool isComplete = false;
-  String isAlcohol = '';
+  bool isAlcohol = false;
   String tag = Uuid().v4();
   String prefGlass = '';
   String category = '';
@@ -26,8 +26,7 @@ class Cocktail {
   });
   isToBeDisplayed() {
     this.display = true;
-    if (cockFiltVals.noAlchool &
-        !(this.isAlcohol.contains(RegExp('non', caseSensitive: false)))) {
+    if (cockFiltVals.noAlchool & !(this.isAlcohol)) {
       this.display = false;
     }
     if (cockFiltVals.onlyComplete & !this.isComplete) {
@@ -71,32 +70,75 @@ class Cocktail {
     if (map.isNotEmpty) {
       map.containsKey('isComplete')
           ? cock.isComplete = map['isComplete']
-          : cock.isComplete = cock.isComplete;
+          : () {
+              cock.isComplete = cock.isComplete;
+              print('isComplete not found for ' + cock.name);
+            }();
       map.containsKey('isAlcohol')
-          ? cock.isAlcohol = map['isAlcohol']
-          : cock.isAlcohol = cock.isAlcohol;
-      map.containsKey('tag') ? cock.tag = map['tag'] : cock.tag = cock.tag;
+          ? cock.isAlcohol = map['isAlcohol'].runtimeType == String
+              ? map['isAlcohol'].contains(RegExp('non', caseSensitive: false))
+              : cock.isAlcohol
+          : () {
+              cock.isAlcohol = cock.isAlcohol;
+              print('cock.isAlcohol not found for ' + cock.name);
+            }();
+      cock.isAlcohol = cock.isAlcohol;
+      map.containsKey('tag')
+          ? cock.tag = map['tag']
+          : () {
+              cock.tag = cock.tag;
+              print('cock.tag not found for ' + cock.name);
+            }();
+      cock.tag = cock.tag;
       map.containsKey('prefGlass')
           ? cock.prefGlass = map['prefGlass']
-          : cock.prefGlass = cock.prefGlass;
+          : () {
+              cock.prefGlass = cock.prefGlass;
+              print('cock.prefGlass not found for ' + cock.name);
+            }();
+      cock.prefGlass = cock.prefGlass;
       map.containsKey('category')
           ? cock.category = map['category']
-          : cock.category = cock.category;
+          : () {
+              cock.category = cock.category;
+              print('cock.category not found for ' + cock.name);
+            }();
+      cock.category = cock.category;
       map.containsKey('instructions')
           ? cock.instructions = map['instructions']
-          : cock.instructions = cock.instructions;
+          : () {
+              cock.instructions = cock.instructions;
+              print('cock.instructions not found for ' + cock.name);
+            }();
+      cock.instructions = cock.instructions;
       map.containsKey('ingredients')
           ? cock.ingredients = List<String>.from(map['ingredients'])
-          : cock.ingredients = cock.ingredients;
+          : () {
+              cock.ingredients = cock.ingredients;
+              print('cock.ingredients not found for ' + cock.name);
+            }();
+      cock.ingredients = cock.ingredients;
       map.containsKey('missing')
           ? cock.missing = List<String>.from(map['missing'])
-          : cock.missing = cock.missing;
+          : () {
+              cock.missing = cock.missing;
+              print('cock.missing not found for ' + cock.name);
+            }();
+      cock.missing = cock.missing;
       map.containsKey('measures')
           ? cock.measures = List<String>.from(map['measures'])
-          : cock.measures = cock.measures;
+          : () {
+              cock.measures = cock.measures;
+              print('cock.measures not found for ' + cock.name);
+            }();
+      cock.measures = cock.measures;
       map.containsKey('display')
           ? cock.display = map['display']
-          : cock.display = cock.display;
+          : () {
+              cock.display = cock.display;
+              print('cock.display not found for ' + cock.name);
+            }();
+      cock.display = cock.display;
     } else {
       Exception('Map empty');
     }
@@ -280,7 +322,8 @@ Future<Cocktail> fetchCockDetail(
     Map decoded = (response.data);
     String ing = "";
     // 16 because of hardcoded number of ingredients
-    cocktail.isAlcohol = decoded['drinks'][0]['strAlcoholic'];
+    cocktail.isAlcohol = decoded['drinks'][0]['strAlcoholic']
+        .contains(RegExp('non', caseSensitive: false));
     cocktail.prefGlass = decoded['drinks'][0]['strGlass'];
     cocktail.category = decoded['drinks'][0]['strCategory'];
     cocktail.instructions = decoded['drinks'][0]['strInstructions'];

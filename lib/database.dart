@@ -3,12 +3,24 @@ import 'package:cockbotapp/physical.dart';
 import 'cock.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-import 'cock_filters.dart';
-
 List liqList = [];
+CockList cockDB = CockList();
 
 Future<void> initDB() async {
   liqList = await fetchLiquidsList();
+  // Retrieve all the cocktails from the Firebase database
+  final cocktailsSnapshot = await FirebaseDatabase.instance
+      .ref('cocktails')
+      .once(DatabaseEventType.value);
+  final cocktailsMap = cocktailsSnapshot.snapshot.value as Map<String, dynamic>;
+
+  // Convert the retrieved cocktails into a list of Cocktail objects
+  cocktailsMap.forEach((key, value) {
+    cockDB.elements.add(Cocktail.fromMap(value));
+  });
+
+  // print cockDB
+  print(cockDB.toString());
 }
 
 Future<void> updateDB() async {
@@ -69,50 +81,34 @@ Future<void> updateDB() async {
   }
 }
 
-Future<List<Cocktail>> applyFilters() async {
-  // Retrieve all the cocktails from the Firebase database
-  final cocktailsSnapshot = await FirebaseDatabase.instance
-      .ref('cocktails')
-      .once(DatabaseEventType.value);
-  final cocktailsMap = cocktailsSnapshot.snapshot.value as Map<String, dynamic>;
+// Future<void> resetFilters() async {
+//   for (var cock
+//       in cockDB.elements.where((cocktail) => cocktail.display == false)) {
+//     cock.display = true;
+//   }
+// }
 
-  // Convert the retrieved cocktails into a list of Cocktail objects
-  List<Cocktail> cocktails = [];
-  cocktailsMap.forEach((key, value) {
-    cocktails.add(Cocktail.fromMap(value));
-  });
-  // Filter the list of cocktails based on the values set in the CockFilterValues object
-  if (cockFiltVals.onlyComplete) {
-    cocktails += cocktails.where((cocktail) => cocktail.isComplete).toList();
-  }
-  if (!cockFiltVals.noAlchool) {
-    cocktails += cocktails
-        .where((cocktail) =>
-            cocktail.isAlcohol.contains(RegExp('non', caseSensitive: false)))
-        .toList();
-  }
-  if (cockFiltVals.allowMissingNonLiquids) {
-    cocktails += cocktails.where((cocktail) => cocktail.isComplete).toList();
-  }
-  if (cockFiltVals.containsLiquid) {
-    cocktails += cocktails
-        .where((cocktail) =>
-            liqList.any((element) => cocktail.ingredients.contains(element)))
-        .toList();
-  }
-
-  if (!cockFiltVals.all) {
-    List<Cocktail> tempCocktails = [];
-    for (String category in cockFiltVals.categories.keys) {
-      if (cockFiltVals.categories[category]) {
-        tempCocktails.addAll(cocktails
-            .where((cocktail) => cocktail.category == category)
-            .toList());
-      }
-    }
-    cocktails += tempCocktails;
-  }
-
-  // Return the filtered list of cocktails
-  return cocktails;
-}
+// Future<void> applyFilters() async {
+//   // Filter the list of cocktails based on the values set in the CockFilterValues object
+//   if (cockFiltVals.containsLiquid) {
+//     for (var cock in cockDB.elements.where((cocktail) =>
+//         liqList.any((element) => cocktail.ingredients.contains(element)))) {
+//       cock.display = true;
+//     }
+//   }
+//   if (cockFiltVals.onlyComplete) {
+//     for (var cock in cockDB.elements.where((cocktail) => cocktail.isComplete)) {
+//       cock.display = false;
+//     }
+//   }
+//   if (cockFiltVals.noAlchool) {
+//     for (var cock in cockDB.elements.where((cocktail) => cocktail.isAlcohol)) {
+//       cock.display = false;
+//     }
+//   }
+//   if (cockFiltVals.allowMissingNonLiquids) {
+//     for (var cock in cockDB.elements.where((cocktail) => cocktail.isComplete)) {
+//       cock.display = true;
+//     }
+//   }
+// }

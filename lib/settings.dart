@@ -33,11 +33,6 @@ class _SettingsViewState extends State<SettingsView> {
           padding: const EdgeInsets.all(8),
           children: <Widget>[
             Container(
-              height: 50,
-              color: Colors.amber[600],
-              child: const Center(child: Text('Settings')),
-            ),
-            Container(
                 child: Row(children: [
               Checkbox(
                   checkColor: Colors.white,
@@ -49,11 +44,14 @@ class _SettingsViewState extends State<SettingsView> {
                         ? theme = ThemeData.dark()
                         : theme = ThemeData.light();
                   }),
-              Text("Set / unset all categories")
+              Text("Dark theme")
             ])),
             // Wide rectangular button
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                // got to a new navigator view
+                Navigator.pushNamed(context, '/updating');
+              },
               icon: Icon(Icons.autorenew),
               label: Text('Check for Updates'),
             ),

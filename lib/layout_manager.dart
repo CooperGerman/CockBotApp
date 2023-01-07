@@ -89,14 +89,29 @@ class _LayoutManagerState extends State<LayoutManager> {
   @override
   void initState() {
     super.initState();
+    cockDB.applyFilters();
+    locCockDB = cockDB.filterDisplayed();
     _searchTextController.addListener(() {
       print(_searchTextController.text);
       searchString = _searchTextController.text;
     });
   }
 
+  void findCock(String filter) {
+    setState(() {
+      locCockDB = cockDB.findCock(filter);
+    });
+  }
+
+  void refreshData() {
+    cockDB.applyFilters();
+    setState(() {
+      locCockDB = cockDB.filterDisplayed();
+    });
+  }
+
   FutureOr onGoBack(dynamic value) {
-    // refreshData();
+    refreshData();
   }
 
   void navigateFilters() {
@@ -105,12 +120,9 @@ class _LayoutManagerState extends State<LayoutManager> {
     Navigator.push(context, route).then(onGoBack);
   }
 
-  Future refreshView() async {
-    locCockDB = await applyFilters();
-  }
-
   void clearSearch() {
     _searchTextController.clear();
+    findCock("");
   }
 
   Text titleStr = Text(
@@ -119,6 +131,7 @@ class _LayoutManagerState extends State<LayoutManager> {
   );
   @override
   Widget build(BuildContext context) {
+    int cockLen = locCockDB.length;
     return Scaffold(
       appBar: AppBar(
           // The search area here
@@ -132,7 +145,7 @@ class _LayoutManagerState extends State<LayoutManager> {
         child: Center(
           child: TextField(
             controller: _searchTextController,
-            // onChanged: (value) => findCock(value),
+            onChanged: (value) => findCock(value),
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: Colors.grey),
@@ -145,20 +158,28 @@ class _LayoutManagerState extends State<LayoutManager> {
           ),
         ),
       )),
-      body: FutureBuilder(
-          future: refreshView(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return SingleChildScrollView(
-                  child: StaggeredGrid.count(
-                      crossAxisCount: 4,
-                      children: List.generate(locCockDB.length, (index) {
-                        return CockView(locCockDB[index]);
-                      })));
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          }),
+      body: cockLen > 0
+          ? SingleChildScrollView(
+              child: StaggeredGrid.count(
+                  crossAxisCount:
+                      MediaQuery.of(context).size.width > 750 ? 4 : 2,
+                  children: [
+                    for (int i = 0; i < cockLen; i++)
+                      CockView(i, locCockDB.elementAt(i))
+                  ]),
+            )
+          // StaggeredGridView.countBuilder(
+          //   primary: false,
+          //   crossAxisCount: 4,
+          //   mainAxisSpacing: 4,
+          //   crossAxisSpacing: 4,
+          //   itemBuilder: (context, index) => index < cockLen
+          //       ? CockView(index, locCockDB.elementAt(index))
+          //       : Text(''),
+          //   staggeredTileBuilder: (index) => StaggeredGridTile.fit(crossAxis
+          //       MediaQuery.of(context).size.width > 750 ? 1 : 2),
+          // )
+          : Center(child: CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => navigateFilters(),
         label: const Text('Filters'),
@@ -171,28 +192,36 @@ class _LayoutManagerState extends State<LayoutManager> {
 
 class CockView extends StatelessWidget {
   /// Displays the cock.
-  const CockView(this.cocktail);
+  const CockView(this.index, this.cocktail);
   final Cocktail cocktail;
+  final int index;
   @override
   Widget build(BuildContext context) {
-    Widget cockImage;
-    if (cocktail.isAlcohol.contains(RegExp('non', caseSensitive: false))) {
-      cockImage = Stack(
+    Widget cockImageWidget;
+    Image cockImage = Image.network(
+      cocktail.imgLink,
+      fit: BoxFit.fitHeight,
+      loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return Center(
+          child: Text('Loading...'),
+          // child: CircularProgressIndicator(
+          //   value: loadingProgress.expectedTotalBytes != null
+          //       ? loadingProgress.cumulativeBytesLoaded /
+          //           loadingProgress.expectedTotalBytes!
+          //       : null,
+          // ),
+        );
+      },
+    );
+    if (cocktail.isAlcohol) {
+      cockImageWidget = Stack(
         children: <Widget>[
           Center(
-            child: Image.network(
-              cocktail.imgLink,
-              fit: BoxFit.fitHeight,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return Center(
-                  child: Text('loading...'),
-                );
-              },
-            ),
+            child: cockImage,
           ),
           Image(
               alignment: Alignment.topRight,
@@ -201,22 +230,10 @@ class CockView extends StatelessWidget {
         ],
       );
     } else {
-      cockImage = Stack(
+      cockImageWidget = Stack(
         children: <Widget>[
           Center(
-            child: Image.network(
-              cocktail.imgLink,
-              fit: BoxFit.fitHeight,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return Center(
-                  child: Text('loading...'),
-                );
-              },
-            ),
+            child: cockImage,
           ),
         ],
       );
@@ -230,7 +247,7 @@ class CockView extends StatelessWidget {
                     .pushNamed(detail_viewer, arguments: cocktail),
                 child: Column(
                   children: <Widget>[
-                    cockImage,
+                    cockImageWidget,
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -258,7 +275,7 @@ class CockView extends StatelessWidget {
                     .pushNamed(detail_viewer, arguments: cocktail),
                 child: Column(
                   children: <Widget>[
-                    cockImage,
+                    cockImageWidget,
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
